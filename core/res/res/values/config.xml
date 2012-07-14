@@ -1169,4 +1169,6 @@
     <!-- Disable the home key unlock setting --> 
     <bool name="config_disableHomeUnlockSetting">true</bool> 
 
+    <!-- Boolean to enable Stylus gestures -->
+    <bool name="config_stylusGestures">false</bool>
 </resources>
