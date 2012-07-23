@@ -2945,13 +2945,19 @@ public final class Settings {
         /**
          * Custom navring actions
          *
-         * @hide
-         */
+	 * @hide
+	 */
         public static final String[] NAVIGATION_RING_TARGETS = new String[] {
             "navigation_ring_targets_0",
             "navigation_ring_targets_1",
             "navigation_ring_targets_2",
         };
+
+        /**
+         * Show the pending notification counts as overlays on the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
         
         /**
          * Volume key controls ringtone or media sound stream
