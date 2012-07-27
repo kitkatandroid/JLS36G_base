@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.CustomTheme;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -43,6 +44,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.util.Slog;
 import android.view.Display;
 import android.view.Gravity;
@@ -57,6 +59,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -79,6 +82,7 @@ import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.Prefs;
 
 import java.io.FileDescriptor;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -242,6 +246,12 @@ public class TabletStatusBar extends BaseStatusBar implements
         mWindowManager.addView(sb, lp);
     }
 
+    // last theme that was applied in order to detect theme change (as opposed
+    // to some other configuration change).
+    CustomTheme mCurrentTheme;
+    private boolean mRecreating = false;
+
+
     protected void addPanelWindows() {
         final Context context = mContext;
         final Resources res = mContext.getResources();
@@ -387,6 +397,18 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
+        // detect theme change.
+        CustomTheme newTheme = mContext.getResources().getConfiguration().customTheme;
+        if (newTheme != null &&
+                (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
+            mCurrentTheme = (CustomTheme)newTheme.clone();
+            // restart systemui
+            try {
+                Runtime.getRuntime().exec("pkill -TERM -f com.android.systemui");
+            } catch (IOException e) {
+                // we're screwed here fellas
+            }
+        }
         loadDimens();
         mNotificationPanelParams.height = getNotificationPanelHeight();
         mWindowManager.updateViewLayout(mNotificationPanel, mNotificationPanelParams);
@@ -449,6 +471,17 @@ public class TabletStatusBar extends BaseStatusBar implements
     protected View makeStatusBarView() {
         final Context context = mContext;
 
+<<<<<<< HEAD
+=======
+        mWindowManager = IWindowManager.Stub.asInterface(
+                ServiceManager.getService(Context.WINDOW_SERVICE));
+
+        CustomTheme currentTheme = mContext.getResources().getConfiguration().customTheme;
+        if (currentTheme != null) {
+            mCurrentTheme = (CustomTheme)currentTheme.clone();
+        }
+
+>>>>>>> 10fb853... Theme chooser (frameworks)
         loadDimens();
 
         final TabletStatusBarView sb = (TabletStatusBarView)View.inflate(
@@ -704,14 +737,19 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     public void onBarHeightChanged(int height) {
         final WindowManager.LayoutParams lp
-                = (WindowManager.LayoutParams)mStatusBarView.getLayoutParams();
+                = (WindowManager.LayoutParams)mStatusBarContainer.getLayoutParams();
         if (lp == null) {
             // haven't been added yet
             return;
         }
         if (lp.height != height) {
             lp.height = height;
+<<<<<<< HEAD
             mWindowManager.updateViewLayout(mStatusBarView, lp);
+=======
+            final WindowManager wm = WindowManagerImpl.getDefault();
+            wm.updateViewLayout(mStatusBarContainer, lp);
+>>>>>>> 10fb853... Theme chooser (frameworks)
         }
     }
 
@@ -881,7 +919,7 @@ public class TabletStatusBar extends BaseStatusBar implements
                 notification.getNotification().fullScreenIntent.send();
             } catch (PendingIntent.CanceledException e) {
             }
-        } else {
+        } else if (!mRecreating) {
             tick(key, notification, true);
         }
 

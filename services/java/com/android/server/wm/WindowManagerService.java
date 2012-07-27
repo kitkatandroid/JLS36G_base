@@ -46,6 +46,8 @@ import android.app.AppOpsManager;
 import android.util.TimeUtils;
 import android.view.IWindowId;
 import com.android.internal.app.IBatteryStats;
+import com.android.internal.app.ThemeUtils;
+
 import com.android.internal.policy.PolicyManager;
 import com.android.internal.policy.impl.PhoneWindowManager;
 import com.android.internal.view.IInputContext;
@@ -290,6 +292,12 @@ public class WindowManagerService extends IWindowManager.Stub
 
     private final boolean mHeadless;
 
+    private BroadcastReceiver mThemeChangeReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            mUiContext = null;
+        }
+    };
+
     final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -305,6 +313,7 @@ public class WindowManagerService extends IWindowManager.Stub
     int mCurrentUserId;
 
     final Context mContext;
+    private Context mUiContext;
 
     final boolean mHaveInputMethods;
 
@@ -821,12 +830,27 @@ public class WindowManagerService extends IWindowManager.Stub
         // Add ourself to the Watchdog monitors.
         Watchdog.getInstance().addMonitor(this);
 
+<<<<<<< HEAD
         SurfaceControl.openTransaction();
         try {
             createWatermarkInTransaction();
         } finally {
             SurfaceControl.closeTransaction();
         }
+=======
+        Surface.openTransaction();
+        createWatermark();
+        Surface.closeTransaction();
+
+        ThemeUtils.registerThemeChangeReceiver(mContext, mThemeChangeReceiver);
+    }
+
+    private Context getUiContext() {
+        if (mUiContext == null) {
+            mUiContext = ThemeUtils.createUiContext(mContext);
+        }
+        return mUiContext != null ? mUiContext : mContext;
+>>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     public InputMonitor getInputMonitor() {
@@ -4967,6 +4991,7 @@ public class WindowManagerService extends IWindowManager.Stub
 
     // Called by window manager policy.  Not exposed externally.
     @Override
+<<<<<<< HEAD
     public void shutdown(boolean confirm) {
         ShutdownThread.shutdown(mContext, confirm);
     }
@@ -4975,8 +5000,13 @@ public class WindowManagerService extends IWindowManager.Stub
     @Override
     public void rebootSafeMode(boolean confirm) {
         ShutdownThread.rebootSafeMode(mContext, confirm);
+=======
+    public void shutdown() {
+        ShutdownThread.shutdown(getUiContext(), true);
+>>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
+    // Called by window manager policy.  Not exposed externally.
     @Override
     public void setInputFilter(IInputFilter filter) {
         if (!checkCallingPermission(android.Manifest.permission.FILTER_EVENTS, "setInputFilter()")) {
@@ -4985,10 +5015,15 @@ public class WindowManagerService extends IWindowManager.Stub
         mInputManager.setInputFilter(filter);
     }
 
-    // Called by window manager policy.  Not exposed externally.
+    // Called by window manager policy. Not exposed externally.
     @Override
+<<<<<<< HEAD
     public void reboot() {
         ShutdownThread.reboot(mContext, null, true);
+=======
+    public void reboot(String reason) {
+        ShutdownThread.reboot(getUiContext(), reason, false);
+>>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     public void setCurrentUser(final int newUserId) {

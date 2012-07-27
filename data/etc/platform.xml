@@ -106,8 +106,14 @@
         <group gid="net_bw_acct" />
     </permission>
 
+<<<<<<< HEAD
     <permission name="android.permission.LOOP_RADIO" >
         <group gid="loop_radio" />
+=======
+    <!-- Permissions to read DRM-protected theme resources. -->
+    <permission name="com.tmobile.permission.ACCESS_DRM_THEME" >
+        <group gid="theme_manager" />
+>>>>>>> 10fb853... Theme chooser (frameworks)
     </permission>
 
     <!-- ================================================================== -->

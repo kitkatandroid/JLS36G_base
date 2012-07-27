@@ -49,7 +49,11 @@ import java.io.PrintWriter;
 
 import com.android.internal.R;
 import com.android.internal.app.DisableCarModeActivity;
+<<<<<<< HEAD
 import com.android.server.TwilightService.TwilightState;
+=======
+import com.android.internal.app.ThemeUtils;
+>>>>>>> 10fb853... Theme chooser (frameworks)
 
 final class UiModeManagerService extends IUiModeManager.Stub {
     private static final String TAG = UiModeManager.class.getSimpleName();
@@ -60,8 +64,12 @@ final class UiModeManagerService extends IUiModeManager.Stub {
     private static final boolean ENABLE_LAUNCH_DESK_DOCK_APP = true;
 
     private final Context mContext;
+<<<<<<< HEAD
     private final TwilightService mTwilightService;
     private final Handler mHandler = new Handler();
+=======
+    private Context mUiContext;
+>>>>>>> 10fb853... Theme chooser (frameworks)
 
     final Object mLock = new Object();
 
@@ -149,8 +157,44 @@ final class UiModeManagerService extends IUiModeManager.Stub {
     private final TwilightService.TwilightListener mTwilightListener =
             new TwilightService.TwilightListener() {
         @Override
+<<<<<<< HEAD
         public void onTwilightStateChanged() {
             updateTwilight();
+=======
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_AIRPLANE_MODE_CHANGED.equals(intent.getAction())) {
+                if (!intent.getBooleanExtra("state", false)) {
+                    // Airplane mode is now off!
+                    mHandler.sendEmptyMessage(MSG_GET_NEW_LOCATION_UPDATE);
+                }
+            } else {
+                // Time zone has changed!
+                mHandler.sendEmptyMessage(MSG_GET_NEW_LOCATION_UPDATE);
+            }
+        }
+    };
+
+    private final BroadcastReceiver mThemeChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mUiContext = null;
+        }
+    };
+
+    // A LocationListener to initialize the network location provider. The location updates
+    // are handled through the passive location provider.
+    private final LocationListener mEmptyLocationListener =  new LocationListener() {
+        public void onLocationChanged(Location location) {
+        }
+
+        public void onProviderDisabled(String provider) {
+        }
+
+        public void onProviderEnabled(String provider) {
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+>>>>>>> 10fb853... Theme chooser (frameworks)
         }
     };
 
@@ -183,12 +227,19 @@ final class UiModeManagerService extends IUiModeManager.Stub {
         mContext.registerReceiver(mBatteryReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
+<<<<<<< HEAD
         // Register settings observer and set initial preferences
         SettingsObserver settingsObserver = new SettingsObserver(new Handler());
         settingsObserver.observe();
 
         mPowerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         mWakeLock = mPowerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
+=======
+        ThemeUtils.registerThemeChangeReceiver(mContext, mThemeChangeReceiver);
+
+        PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+        mWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
+>>>>>>> 10fb853... Theme chooser (frameworks)
 
         mConfiguration.setToDefaults();
 
@@ -592,7 +643,7 @@ final class UiModeManagerService extends IUiModeManager.Stub {
                 n.flags = Notification.FLAG_ONGOING_EVENT;
                 n.when = 0;
                 n.setLatestEventInfo(
-                        mContext,
+                        getUiContext(),
                         mContext.getString(R.string.car_mode_disable_notification_title),
                         mContext.getString(R.string.car_mode_disable_notification_message),
                         PendingIntent.getActivityAsUser(mContext, 0, carModeOffIntent, 0,
@@ -620,6 +671,13 @@ final class UiModeManagerService extends IUiModeManager.Stub {
         if (state != null) {
             mComputedNightMode = state.isNight();
         }
+    }
+
+    private Context getUiContext() {
+        if (mUiContext == null) {
+            mUiContext = ThemeUtils.createUiContext(mContext);
+        }
+        return mUiContext != null ? mUiContext : mContext;
     }
 
     @Override

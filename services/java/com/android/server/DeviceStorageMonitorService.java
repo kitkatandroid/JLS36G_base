@@ -16,9 +16,11 @@
 
 package com.android.server;
 
+import com.android.internal.app.ThemeUtils;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -87,7 +89,12 @@ public class DeviceStorageMonitorService extends Binder {
     private boolean mLowMemFlag=false;
     private boolean mMemFullFlag=false;
     private Context mContext;
+<<<<<<< HEAD
     private ContentResolver mResolver;
+=======
+    private Context mUiContext;
+    private ContentResolver mContentResolver;
+>>>>>>> 10fb853... Theme chooser (frameworks)
     private long mTotalMemory;  // on /data
     private StatFs mDataFileStats;
     private StatFs mSystemFileStats;
@@ -315,7 +322,19 @@ public class DeviceStorageMonitorService extends Binder {
     public DeviceStorageMonitorService(Context context) {
         mLastReportedFreeMemTime = 0;
         mContext = context;
+<<<<<<< HEAD
         mResolver = mContext.getContentResolver();
+=======
+        mContentResolver = mContext.getContentResolver();
+
+        ThemeUtils.registerThemeChangeReceiver(mContext, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context content, Intent intent) {
+                mUiContext = null;
+            }
+        });
+
+>>>>>>> 10fb853... Theme chooser (frameworks)
         //create StatFs object
         mDataFileStats = new StatFs(DATA_PATH.getAbsolutePath());
         mSystemFileStats = new StatFs(SYSTEM_PATH.getAbsolutePath());
@@ -375,10 +394,16 @@ public class DeviceStorageMonitorService extends Binder {
         notification.icon = com.android.internal.R.drawable.stat_notify_disk_full;
         notification.tickerText = title;
         notification.flags |= Notification.FLAG_NO_CLEAR;
+<<<<<<< HEAD
         notification.setLatestEventInfo(mContext, title, details, intent);
         mNotificationMgr.notifyAsUser(null, LOW_MEMORY_NOTIFICATION_ID, notification,
                 UserHandle.ALL);
         mContext.sendStickyBroadcastAsUser(mStorageLowIntent, UserHandle.ALL);
+=======
+        notification.setLatestEventInfo(getUiContext(), title, details, intent);
+        mNotificationMgr.notify(LOW_MEMORY_NOTIFICATION_ID, notification);
+        mContext.sendStickyBroadcast(mStorageLowIntent);
+>>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     /**
@@ -453,6 +478,7 @@ public class DeviceStorageMonitorService extends Binder {
         }
     }
 
+<<<<<<< HEAD
     @Override
     protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
@@ -487,5 +513,12 @@ public class DeviceStorageMonitorService extends Binder {
                 pw.print(Formatter.formatFileSize(mContext, mMemCacheStartTrimThreshold));
                 pw.print(" mMemCacheTrimToThreshold=");
                 pw.println(Formatter.formatFileSize(mContext, mMemCacheTrimToThreshold));
+=======
+    private Context getUiContext() {
+        if (mUiContext == null) {
+            mUiContext = ThemeUtils.createUiContext(mContext);
+        }
+        return mUiContext != null ? mUiContext : mContext;
+>>>>>>> 10fb853... Theme chooser (frameworks)
     }
 }
