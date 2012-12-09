@@ -147,6 +147,4 @@ class TelephonyIcons {
                     R.drawable.stat_sys_data_fully_connected_lte,
                     R.drawable.stat_sys_data_fully_connected_lte }
     };
-
 }
-

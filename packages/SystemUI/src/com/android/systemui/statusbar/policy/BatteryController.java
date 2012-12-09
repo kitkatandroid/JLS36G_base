@@ -18,7 +18,6 @@ package com.android.systemui.statusbar.policy;
 
 import java.util.ArrayList;
 
-import android.bluetooth.BluetoothAdapter.BluetoothStateChangeCallback;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,7 +28,6 @@ import android.os.BatteryManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
-import android.util.Slog;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -93,7 +91,7 @@ public class BatteryController extends BroadcastReceiver {
 	
 
     public interface BatteryStateChangeCallback {
-        public void onBatteryLevelChanged(int level, boolean pluggedIn);
+        public void onBatteryLevelChanged(int level, int status);
     }
 
     //For HALO Mods
@@ -132,7 +130,7 @@ public class BatteryController extends BroadcastReceiver {
     public void addStateChangedCallback(BatteryStateChangeCallback cb) {
         mChangeCallbacks.add(cb);
         // trigger initial update
-        cb.onBatteryLevelChanged(mBatteryLevel, isBatteryStatusCharging());
+        cb.onBatteryLevelChanged(getBatteryLevel(), getBatteryStatus());
     }
 
     public void removeStateChangedCallback(BatteryStateChangeCallback cb) {
@@ -154,6 +152,10 @@ public class BatteryController extends BroadcastReceiver {
     }
     public int getIconStyleChargeMin() {
         return R.drawable.stat_sys_battery_charge_min;
+    }
+
+    protected int getBatteryLevel() {
+        return mBatteryLevel;
     }
 
     protected int getBatteryStyle() {
@@ -210,24 +212,24 @@ public class BatteryController extends BroadcastReceiver {
     }
 
     protected void updateViews() {
+        int level = getBatteryLevel();
         if (mUiController) {
             int N = mIconViews.size();
             for (int i=0; i<N; i++) {
                 ImageView v = mIconViews.get(i);
-                v.setImageLevel(mBatteryLevel);
+                v.setImageLevel(level);
                 v.setContentDescription(mContext.getString(R.string.accessibility_battery_level,
-                        mBatteryLevel));
+                        level));
             }
             N = mLabelViews.size();
             for (int i=0; i<N; i++) {
                 TextView v = mLabelViews.get(i);
-                v.setText(mContext.getString(BATTERY_TEXT_STYLE_MIN,
-                        mBatteryLevel));
+                v.setText(mContext.getString(BATTERY_TEXT_STYLE_MIN, level));
             }
         }
 
         for (BatteryStateChangeCallback cb : mChangeCallbacks) {
-            cb.onBatteryLevelChanged(mBatteryLevel, isBatteryStatusCharging());
+	    cb.onBatteryLevelChanged(level, getBatteryStatus());
 
 	// For HALO Mods
 	for (BatteryStateChangeCallbackHalo cb_Halo : mChangeCallbacksHalo) {
@@ -273,7 +275,7 @@ public class BatteryController extends BroadcastReceiver {
         }
     }
 
-    private void updateSettings() {
+    public void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
         mBatteryStyle = (Settings.System.getInt(resolver,
                 Settings.System.STATUS_BAR_BATTERY, BATTERY_STYLE_NORMAL));

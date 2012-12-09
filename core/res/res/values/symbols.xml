@@ -1858,4 +1858,12 @@
   <java-symbol type="string" name="reboot_progress" />
   <java-symbol type="string" name="reboot_system" />
 
+  <!-- QS -->
+  <java-symbol type="string" name="hour" />
+  <java-symbol type="string" name="hours" />
+  <java-symbol type="string" name="minute" />
+  <java-symbol type="string" name="minutes" />
+  <java-symbol type="string" name="second" />
+  <java-symbol type="string" name="seconds" />
+
 </resources>
