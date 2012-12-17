@@ -2337,9 +2337,15 @@ public final class Settings {
          * Show touch positions on screen?
          * 0 = no
          * 1 = yes
-         * @hide
+	 * @hide
          */
         public static final String SHOW_TOUCHES = "show_touches";
+
+        /**
+         * Override and forcefully disable the fullscreen keyboard
+         * @hide
+         */
+        public static final String DISABLE_FULLSCREEN_KEYBOARD = "disable_fullscreen_keyboard";
 
         /**
          * Log raw orientation data from {@link WindowOrientationListener} for use with the
