@@ -562,6 +562,7 @@
     <string name="quick_settings_label_enabled">On</string>
     <string name="quick_settings_label_disabled">Off</string>
     <string name="quick_settings_lockscreen">Lock screen</string>
+    <string name="quick_settings_network_type">Network mode</string>
     <string name="quick_settings_report_bug">Report bug</string>
     <string name="quick_settings_sync">Sync</string>
     <string name="quick_settings_sync_off">Sync off</string>

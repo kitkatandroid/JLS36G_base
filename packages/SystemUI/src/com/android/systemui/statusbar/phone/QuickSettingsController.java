@@ -40,6 +40,7 @@ import static com.android.internal.util.cm.QSConstants.TILE_WIFIAP;
 import static com.android.internal.util.cm.QSConstants.TILE_FCHARGE;  
 
 import android.content.BroadcastReceiver;
+import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -182,13 +183,23 @@ public class QuickSettingsController {
             } else if (tile.equals(TILE_CAMERA) && cameraSupported) {
                 qs = new CameraTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_SYNC)) {
-                qs = new SyncTile(mContext, this);
-            } else if (tile.equals(TILE_WIFIAP) && mobileDataSupported) {
-                qs = new WifiAPTile(mContext, this);
-            } else if (tile.equals(TILE_MOBILEDATA) && mobileDataSupported) {
-                qs = new MobileNetworkTile(mContext, this, mStatusBarService.mNetworkController);
+                // Not available yet
+            } else if (tile.equals(TILE_WIFIAP)) {
+                if(deviceSupportsTelephony()) {
+                    mQuickSettings.add(WIFIAP_TILE);
+                }
+            } else if (tile.equals(TILE_SCREENTIMEOUT)) {
+                // Not available yet
+            } else if (tile.equals(TILE_MOBILEDATA)) {
+                if(deviceSupportsTelephony()) {
+                    mQuickSettings.add(MOBILE_NETWORK_TILE);
+                }
             } else if (tile.equals(TILE_LOCKSCREEN)) {
-                qs = new ToggleLockscreenTile(mContext, this);
+                mQuickSettings.add(TOGGLE_LOCKSCREEN_TILE);
+            } else if (tile.equals(TILE_NETWORKMODE)) {
+                if(deviceSupportsTelephony()) {
+                    mQuickSettings.add(MOBILE_NETWORK_TYPE_TILE);
+                }
             } else if (tile.equals(TILE_AUTOROTATE)) {
                 qs = new AutoRotateTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_AIRPLANE)) {
@@ -217,7 +228,6 @@ public class QuickSettingsController {
             if (qs != null) {
                 qs.setupQuickSettingsTile(inflater, mContainerView);
                 mQuickSettingsTiles.add(qs);
-
             }
         }
 
