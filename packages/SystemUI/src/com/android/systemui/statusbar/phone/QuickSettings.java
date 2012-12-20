@@ -36,6 +36,7 @@ import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -44,6 +45,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -107,6 +109,7 @@ class QuickSettings {
     boolean mUseDefaultAvatar = false;
 
     private Handler mHandler;
+    private int mTileTextSize = 12;
 
     // The set of QuickSettingsTiles that have dynamic spans (and need to be updated on
     // configuration change)
@@ -151,6 +154,8 @@ class QuickSettings {
         profileFilter.addAction(Intent.ACTION_USER_INFO_CHANGED);
         mContext.registerReceiverAsUser(mProfileReceiver, UserHandle.ALL, profileFilter,
                 null, null);
+
+        new SettingsObserver(new Handler()).observe();
     }
 
     void setBar(PanelBar bar) {
@@ -250,6 +255,7 @@ class QuickSettings {
     }
 
     private void setupQuickSettings() {
+        updateSettings();
         // Setup the tiles that we are going to be showing (including the temporary ones)
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
@@ -316,6 +322,7 @@ class QuickSettings {
                 ImageView iv = (ImageView) view.findViewById(R.id.user_imageview);
                 TextView tv = (TextView) view.findViewById(R.id.user_textview);
                 tv.setText(state.label);
+                tv.setTextSize(1, mTileTextSize);
                 iv.setImageDrawable(us.avatar);
                 view.setContentDescription(mContext.getString(
                         R.string.accessibility_quick_settings_user, state.label));
@@ -337,6 +344,8 @@ class QuickSettings {
         });
         mModel.addBrightnessTile(brightnessTile,
                 new QuickSettingsModel.BasicRefreshCallback(brightnessTile));
+		tv.setText(state.label);
+                tv.setTextSize(1, mTileTextSize);
         parent.addView(brightnessTile);
         mDynamicSpannedTiles.add(brightnessTile);
 
@@ -371,6 +380,8 @@ class QuickSettings {
         });
         mModel.addSettingsTile(settingsTile,
                 new QuickSettingsModel.BasicRefreshCallback(settingsTile));
+		tv.setText(state.label);
+                tv.setTextSize(1, mTileTextSize);
         parent.addView(settingsTile);
         mDynamicSpannedTiles.add(settingsTile);
     }
@@ -414,11 +425,14 @@ class QuickSettings {
             public void refreshView(QuickSettingsTileView unused, State state) {
                 WifiState wifiState = (WifiState) state;
                 wifiTile.setImageResource(wifiState.iconId);
+		tv.setText(state.label);
+		tv.setTextSize(1, mTileTextSize);
                 wifiTile.setText(wifiState.label);
                 wifiTile.setContentDescription(mContext.getString(
-                        R.string.accessibility_quick_settings_wifi,
+	        R.string.accessibility_quick_settings_wifi,
                         wifiState.signalContentDescription,
                         (wifiState.connected) ? wifiState.label : ""));
+                        
             }
         });
         parent.addView(wifiTile);
@@ -455,6 +469,7 @@ class QuickSettings {
                         iov.setImageDrawable(null);
                     }
                     tv.setText(state.label);
+		    tv.setTextSize(1, mTileTextSize);
                     view.setContentDescription(mContext.getResources().getString(
                             R.string.accessibility_quick_settings_mobile,
                             rssiState.signalContentDescription, rssiState.dataContentDescription,
@@ -478,6 +493,8 @@ class QuickSettings {
             });
             mModel.addRotationLockTile(rotationLockTile,
                     new QuickSettingsModel.BasicRefreshCallback(rotationLockTile));
+                    tv.setText(state.label);
+		    tv.setTextSize(1, mTileTextSize);
             parent.addView(rotationLockTile);
         }
 
@@ -510,11 +527,13 @@ class QuickSettings {
                 batteryTile.setImageDrawable(d);
                 batteryTile.getImageView().setImageLevel(batteryState.batteryLevel);
                 batteryTile.setText(t);
+		tv.setText(state.label);
+		tv.setTextSize(1, mTileTextSize);
                 batteryTile.setContentDescription(
-                        mContext.getString(R.string.accessibility_quick_settings_battery, t));
+			mContext.getString(R.string.accessibility_quick_settings_battery, t));
             }
         });
-        parent.addView(batteryTile);
+	parent.addView(batteryTile);
 
         // Airplane Mode
         final QuickSettingsBasicTile airplaneTile
@@ -530,6 +549,8 @@ class QuickSettings {
                 airplaneTile.setContentDescription(
                         mContext.getString(R.string.accessibility_quick_settings_airplane, airplaneState));
                 airplaneTile.setText(state.label);
+                tv.setText(state.label);
+		tv.setTextSize(1, mTileTextSize);
             }
         });
         parent.addView(airplaneTile);
@@ -582,6 +603,8 @@ class QuickSettings {
                             R.string.accessibility_quick_settings_bluetooth,
                             bluetoothState.stateContentDescription));
                     bluetoothTile.setText(state.label);
+                    tv.setText(state.label);
+		    tv.setTextSize(1, mTileTextSize);
                 }
             });
             parent.addView(bluetoothTile);
@@ -609,9 +632,11 @@ class QuickSettings {
             @Override
             public void refreshView(QuickSettingsTileView unused, State alarmState) {
                 alarmTile.setText(alarmState.label);
+		tv.setText(state.label);
+		tv.setTextSize(1, mTileTextSize);
                 alarmTile.setVisibility(alarmState.enabled ? View.VISIBLE : View.GONE);
                 alarmTile.setContentDescription(mContext.getString(
-                        R.string.accessibility_quick_settings_alarm, alarmState.label));
+		R.string.accessibility_quick_settings_alarm, alarmState.label));
             }
         });
         parent.addView(alarmTile);
@@ -630,6 +655,7 @@ class QuickSettings {
         mModel.addLocationTile(locationTile,
                 new QuickSettingsModel.BasicRefreshCallback(locationTile)
                         .setShowWhenEnabled(true));
+		tv.setTextSize(1, mTileTextSize);
         parent.addView(locationTile);
 
         // Wifi Display
@@ -645,6 +671,7 @@ class QuickSettings {
         mModel.addWifiDisplayTile(wifiDisplayTile,
                 new QuickSettingsModel.BasicRefreshCallback(wifiDisplayTile)
                         .setShowWhenEnabled(true));
+                tv.setTextSize(1, mTileTextSize);
         parent.addView(wifiDisplayTile);
 
         if (SHOW_IME_TILE || DEBUG_GONE_TILES) {
@@ -666,6 +693,7 @@ class QuickSettings {
             mModel.addImeTile(imeTile,
                     new QuickSettingsModel.BasicRefreshCallback(imeTile)
                             .setShowWhenEnabled(true));
+                        tv.setTextSize(1, mTileTextSize);
             parent.addView(imeTile);
         }
 
@@ -779,6 +807,7 @@ class QuickSettings {
         }
         if (mTilesSetUp) {
             queryForUserInformation();
+            updateSettings();
         }
     }
 
@@ -831,4 +860,48 @@ class QuickSettings {
 
         }
     };
+
+    void updateTileTextSize(int column) {
+        // adjust Tile Text Size based on column count
+        switch (column) {
+            case 5:
+                mTileTextSize = 8;
+                break;
+            case 4:
+                mTileTextSize = 10;
+                break;
+            case 3:
+            default:
+                mTileTextSize = 12;
+                break;
+        }
+        updateSettings();
+    }
+
+    private void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+        int columnCount = Settings.System.getInt(resolver, Settings.System.QUICK_TILES_PER_ROW,
+                mContext.getResources().getInteger(R.integer.quick_settings_num_columns));
+        ((QuickSettingsContainerView) mContainerView).setColumnCount(columnCount);
+        updateTileTextSize(columnCount);
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.QUICK_TILES_PER_ROW),
+                    false, this);
+            updateSettings();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
 }
