@@ -2820,6 +2820,11 @@ public final class Settings {
          */
         public static final String AUTO_HIDE_STATUSBAR = "auto_hide_statusbar";
 
+	/**
+         * Custom carrier label
+         */
+        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
+
         /**
          * Whether Status Bar is currently hidden or not
          * @hide
