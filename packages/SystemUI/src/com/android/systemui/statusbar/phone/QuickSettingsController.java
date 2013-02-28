@@ -29,6 +29,7 @@ import static com.android.internal.util.cm.QSConstants.TILE_GPS;
 import static com.android.internal.util.cm.QSConstants.TILE_LOCKSCREEN;
 import static com.android.internal.util.cm.QSConstants.TILE_MOBILEDATA;
 import static com.android.internal.util.cm.QSConstants.TILE_NFC;
+import static com.android.internal.util.cm.QSConstants.TILE_LTE;
 import static com.android.internal.util.cm.QSConstants.TILE_SETTINGS;
 import static com.android.internal.util.cm.QSConstants.TILE_SLEEP;
 import static com.android.internal.util.cm.QSConstants.TILE_SYNC;
@@ -38,6 +39,7 @@ import static com.android.internal.util.cm.QSConstants.TILE_VOLUME;
 import static com.android.internal.util.cm.QSConstants.TILE_WIFI;
 import static com.android.internal.util.cm.QSConstants.TILE_WIFIAP;
 import static com.android.internal.util.cm.QSConstants.TILE_FCHARGE;  
+import static com.android.internal.util.cm.QSUtils.deviceSupportsLte;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -65,6 +67,7 @@ import com.android.systemui.quicksettings.BugReportTile;
 import com.android.systemui.quicksettings.CameraTile;
 import com.android.systemui.quicksettings.GPSTile;
 import com.android.systemui.quicksettings.InputMethodTile;
+import com.android.systemui.quicksettings.LteTile;
 import com.android.systemui.quicksettings.MobileNetworkTile;
 import com.android.systemui.quicksettings.NfcTile;
 import com.android.systemui.quicksettings.PreferencesTile;
@@ -139,6 +142,7 @@ public class QuickSettingsController {
         boolean cameraSupported = QSUtils.deviceSupportsCamera();
         boolean bluetoothSupported = QSUtils.deviceSupportsBluetooth();
         boolean mobileDataSupported = QSUtils.deviceSupportsMobileData(mContext);
+        boolean lteSupported = QSUtils.deviceSupportsLte(mContext);
 
         if (!bluetoothSupported) {
             TILES_DEFAULT.remove(TILE_BLUETOOTH);
@@ -147,6 +151,10 @@ public class QuickSettingsController {
         if (!mobileDataSupported) {
             TILES_DEFAULT.remove(TILE_WIFIAP);
             TILES_DEFAULT.remove(TILE_MOBILEDATA);
+        }
+
+        if (!lteSupported) {
+            TILES_DEFAULT.remove(TILE_LTE);
         }
 
         // Read the stored list of tiles
@@ -212,6 +220,8 @@ public class QuickSettingsController {
                 if (QSUtils.expandedDesktopEnabled(resolver)) {
                     qs = new ExpandedDesktopTile(mContext, this, mHandler);
                 }
+            } else if (tile.equals(TILE_LTE)) {
+                qs = new LteTile(mContext, this);
             }
 
             if (qs != null) {
