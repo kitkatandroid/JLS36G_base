@@ -579,23 +579,25 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
             } catch (RemoteException e) {
                 // too bad, so sad...
             }
-        } else {
-            Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
-                    .getAssistIntent(mContext, UserHandle.USER_CURRENT);
-
-            if (intent != null) {
-                try {
-                    ActivityOptions opts = ActivityOptions.makeCustomAnimation(mContext,
-                            R.anim.search_launch_enter, R.anim.search_launch_exit);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivityAsUser(intent, opts.toBundle(),
-                            new UserHandle(UserHandle.USER_CURRENT));
-                } catch (ActivityNotFoundException ignored) {
-                    // fall through
-                }
-            }
-        }
+	}
     }
+        //} else {
+            //Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
+                    //.getAssistIntent(mContext, UserHandle.USER_CURRENT);
+
+            //if (intent != null) {
+                //try {
+                    //ActivityOptions opts = ActivityOptions.makeCustomAnimation(mContext,
+                            //R.anim.search_launch_enter, R.anim.search_launch_exit);
+                    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //mContext.startActivityAsUser(intent, opts.toBundle(),
+                            //new UserHandle(UserHandle.USER_CURRENT));
+                //} catch (ActivityNotFoundException ignored) {
+                    // fall through
+                //}
+            //}
+        //}
+    //}
 
     public boolean isShowing() {
         return mPieContainer != null && mPieContainer.isShowing();
