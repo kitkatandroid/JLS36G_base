@@ -261,6 +261,11 @@ interface IWindowManager
     void showAssistant();
 
     /**
+     * Update the application display metrics
+     */
+    void updateDisplayMetrics();
+
+    /**
      * Sets the display magnification callbacks. These callbacks notify
      * the client for contextual changes related to display magnification.
      *
