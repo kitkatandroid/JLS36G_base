@@ -91,7 +91,7 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
         // we don't even start to collect this data.
         mStaleData = true;
 
-        mClockText = getTimeFormat().format(new Date());
+        //mClockText = getTimeFormat().format(new Date());
 
         mClockPaint.setAlpha(0);
         mInfoPaint.setAlpha(0);
@@ -193,8 +193,8 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
         return ssid;
     }
 
-    private SimpleDateFormat getTimeFormat() {
-        int formatResId;
+    //private SimpleDateFormat getTimeFormat() {
+        //int formatResId;
 
         //if (DateFormat.is24HourFormat(mContext)) {
             //formatResId = com.android.internal.R.string.twenty_four_hour_time_format;
@@ -202,30 +202,30 @@ public class PieSysInfo extends PieSliceContainer implements ValueAnimator.Anima
             //formatResId = com.android.internal.R.string.twelve_hour_time_format;
         //}
 
-        String format = mContext.getString(formatResId);
-        if (format.equals(mTimeFormatString)) {
-            return mTimeFormat;
-        }
+        //String format = mContext.getString(formatResId);
+        //if (format.equals(mTimeFormatString)) {
+            //return mTimeFormat;
+        //}
 
         /*
          * Strip off any unquoted 'a' characters in the format string
          * to get a time without AM/PM extension
          */
-        StringBuilder formatBuilder = new StringBuilder();
-        boolean quoted = false;
-        for (int i = 0; i < format.length(); i++) {
-            char c = format.charAt(i);
+        //StringBuilder formatBuilder = new StringBuilder();
+        //boolean quoted = false;
+        //for (int i = 0; i < format.length(); i++) {
+            //char c = format.charAt(i);
 
-            if (c == '\'') {
-                quoted = !quoted;
-            }
-            if (quoted || c != 'a') {
-                formatBuilder.append(c);
-            }
-        }
+            //if (c == '\'') {
+                //quoted = !quoted;
+            //}
+            //if (quoted || c != 'a') {
+                //formatBuilder.append(c);
+            //}
+        //}
 
-        mTimeFormatString = format;
-        mTimeFormat = new SimpleDateFormat(formatBuilder.toString().trim());
-        return mTimeFormat;
-    }
+        //mTimeFormatString = format;
+        //mTimeFormat = new SimpleDateFormat(formatBuilder.toString().trim());
+        //return mTimeFormat;
+    //}
 }

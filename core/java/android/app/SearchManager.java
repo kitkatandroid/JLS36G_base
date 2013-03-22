@@ -844,7 +844,7 @@ public class SearchManager
     /**
      * Gets an intent for launching installed assistant activity, or null if not available.
      * @return The assist intent.
-     *
+     * boolean inclContext -- inclContext -- boolean inclContext
      * @hide
      */
     public Intent getAssistIntent(Context context, boolean inclContext, int userHandle) {
