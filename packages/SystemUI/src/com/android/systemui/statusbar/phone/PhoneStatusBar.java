@@ -111,6 +111,7 @@ import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.OnSizeChangedListener;
 import com.android.systemui.statusbar.policy.Prefs;
 import com.android.systemui.statusbar.AppSidebar;
+import com.android.systemui.statusbar.policy.PieController.Position;
 
 public class PhoneStatusBar extends BaseStatusBar {
     static final String TAG = "PhoneStatusBar";
@@ -2250,6 +2251,21 @@ public class PhoneStatusBar extends BaseStatusBar {
             Slog.d(TAG, (showMenu?"showing":"hiding") + " the MENU button");
         }
         propagateMenuVisibility(showMenu);
+
+        // hide pie triggers when keyguard is visible
+        try {
+            if (mWindowManagerService.isKeyguardLocked()) {
+                updatePieTriggerMask(Position.BOTTOM.FLAG
+                        | Position.TOP.FLAG);
+            } else {
+                updatePieTriggerMask(Position.LEFT.FLAG
+                        | Position.BOTTOM.FLAG
+                        | Position.RIGHT.FLAG
+                        | Position.TOP.FLAG);
+            }
+        } catch (RemoteException e) {
+            // nothing else to do ...
+        }
 
         // See above re: lights-out policy for legacy apps.
         if (showMenu) setLightsOn(true);
