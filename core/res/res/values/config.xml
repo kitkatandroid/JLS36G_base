@@ -1169,4 +1169,7 @@
     <!-- Disable the home key unlock setting --> 
     <bool name="config_disableHomeUnlockSetting">true</bool> 
 
+    <!-- True if the pie service should be started at system start. This is must be true
+         to support pie controls. -->
+    <bool name="config_allowPieService">true</bool>
 </resources>
