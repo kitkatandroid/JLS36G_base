@@ -78,6 +78,8 @@
     <!-- Launcher helper extra permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+
     <application
         android:persistent="true"
         android:allowClearUserData="false"
