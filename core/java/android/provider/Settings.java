@@ -2562,7 +2562,7 @@ public final class Settings {
          *   -7 = slowest
          *    0 = default speed
          *   +7 = fastest
-         * @hide
+	 * @hide
          */
         public static final String POINTER_SPEED = "pointer_speed";
 
@@ -2665,6 +2665,23 @@ public final class Settings {
         public static final String STATUSBAR_CLOCK_AM_PM_STYLE = "statusbar_clock_am_pm_style";
 
        /**
+
+	/**
+         * Whether or not to use the app sidebar
+         *
+         * @hide
+         */
+        public static final String APP_SIDE_BAR_ENABLED = "app_sidebar_enabled";
+
+        /**
+         * How to sort and order the items in the app sidebar
+         *
+         * @hide
+         */
+        public static final String APP_SIDEBAR_SORT_TYPE = "app_sidebar_sort_type";         
+      
+       /** Volume Adjust Sounds Enable, This is the noise made when using volume hard buttons
+        * Defaults to 1 - sounds enabled
         * @hide
         */
         public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";

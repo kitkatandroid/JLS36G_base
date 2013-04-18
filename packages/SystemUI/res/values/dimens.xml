@@ -248,4 +248,6 @@
 
     <!-- Active display overflow notification padding -->
     <dimen name="overflow_icon_padding">2dp</dimen>
+
+    <dimen name="app_sidebar_item_height">64dp</dimen>
 </resources>
