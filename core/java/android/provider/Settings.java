@@ -2563,8 +2563,8 @@ public final class Settings {
          *    0 = default speed
          *   +7 = fastest
 	 * @hide
-         */
-        public static final String POINTER_SPEED = "pointer_speed";
+	 */
+        public static final String POINTER_SPEED = "pointer_speed";       
 
         /**
          * Quick Settings Panel Tiles to Use
@@ -2678,7 +2678,14 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String APP_SIDEBAR_SORT_TYPE = "app_sidebar_sort_type";         
+        public static final String APP_SIDEBAR_SORT_TYPE = "app_sidebar_sort_type";  
+
+	/**
+         * How to sort and order the items in the app sidebar
+         *
+         * @hide
+         */
+        public static final String APP_SIDEBAR_TRANSPARENCY = "app_sidebar_transparency";        
       
        /** Volume Adjust Sounds Enable, This is the noise made when using volume hard buttons
         * Defaults to 1 - sounds enabled
