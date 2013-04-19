@@ -2678,7 +2678,7 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String APP_SIDEBAR_SORT_TYPE = "app_sidebar_sort_type";  
+        public static final String APP_SIDEBAR_SORT_TYPE = "app_sidebar_sort_type";
 
 	/**
          * User defined transparency level for sidebar
@@ -2692,7 +2692,14 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String APP_SIDEBAR_ITEM_SIZE = "app_sidebar_item_size";       
+        public static final String APP_SIDEBAR_ITEM_SIZE = "app_sidebar_item_size";
+
+	/**
+         * List of apps to exclude from sidebar
+         *
+         * @hide
+         */
+        public static final String APP_SIDEBAR_EXCLUDE_LIST = "app_sidebar_exclude_list";   
       
        /** Volume Adjust Sounds Enable, This is the noise made when using volume hard buttons
         * Defaults to 1 - sounds enabled
