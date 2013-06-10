@@ -38,6 +38,13 @@ interface INotificationManager
     void setNotificationsEnabledForPackage(String pkg, int uid, boolean enabled);
     boolean areNotificationsEnabledForPackage(String pkg, int uid);
 
+    void setHaloPolicyBlack(boolean state);
+    void setHaloStatus(String pkg, boolean status);
+    void setHaloBlacklistStatus(String pkg, boolean status);
+    void setHaloWhitelistStatus(String pkg, boolean status);
+    boolean isHaloPolicyBlack();
+    boolean isPackageAllowedForHalo(String pkg);
+
     StatusBarNotification[] getActiveNotifications(String callingPkg);
     StatusBarNotification[] getHistoricalNotifications(String callingPkg, int count);
 
