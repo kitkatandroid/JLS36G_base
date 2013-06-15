@@ -34,6 +34,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.provider.Settings;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
