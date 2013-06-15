@@ -2317,7 +2317,13 @@ public final class Settings {
          * pending. The value is boolean (1 or 0).
          * @hide
          */
-        public static final String NOTIFICATION_LIGHT_PULSE = "notification_light_pulse";
+        public static final String NOTIFICATION_LIGHT_PULSE = "notification_light_pulse";		
+
+        /**
+         * HALO enabled, should default to 0 (no, HALO is disabled)
+         * @hide
+         */
+        public static final String HALO_ENABLED = "halo_enabled";
 
         /**
          * Show pointer location on screen?
