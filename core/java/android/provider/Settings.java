@@ -2720,6 +2720,12 @@ public final class Settings {
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
 
         /**
+         * Whether fcharge is enabled or not if kernel supports it
+         * @hide
+         */
+        public static final String FCHARGE_ENABLED = "fcharge_enabled";  
+
+        /**
          * Whether power menu expanded desktop is enabled
          * @hide
          */
