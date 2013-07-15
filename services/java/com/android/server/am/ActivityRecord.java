@@ -438,6 +438,7 @@ final class ActivityRecord {
                 intent.setFlags(intent.getFlags() & ~Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 
                 // If this is the mother-intent we make it volatile
                 if (topIntent) {
