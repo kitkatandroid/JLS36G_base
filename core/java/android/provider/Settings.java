@@ -2097,9 +2097,33 @@ public final class Settings {
          * relied on the setting, while this is purely about the vibration setting for incoming
          * calls.
          *
-         * @hide
+	 * @hide
          */
         public static final String VIBRATE_WHEN_RINGING = "vibrate_when_ringing";
+
+	/**
+         * HALO, should default to 0 (no, do not show)
+         * @hide
+         */
+        public static final String HALO_ACTIVE = "halo_active";
+
+        /**
+         * HALO reversed?, should default to 1 (yes, reverse)
+         * @hide
+         */
+        public static final String HALO_REVERSED = "halo_reversed";
+
+        /**
+         * HALO hide?, should default to 0 (no, do not hide)
+         * @hide
+         */
+        public static final String HALO_HIDE = "halo_hide";
+
+        /**
+         * HALO size fraction, default is 1.0f (normal)
+         * @hide
+         */
+        public static final String HALO_SIZE = "halo_size";
 
         /**
          * Whether the audible DTMF tones are played by the dialer when dialing. The value is
