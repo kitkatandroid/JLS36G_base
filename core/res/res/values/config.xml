@@ -1150,4 +1150,7 @@
          kill the foreground app. -->
     <integer name="config_backKillTimeout">1500</integer>
 
+    <!-- Device has a h/w rotation lock switch -->
+    <bool name="config_hasRotationLockSwitch">false</bool>
+
 </resources>
