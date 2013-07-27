@@ -1873,4 +1873,7 @@
   <!-- Developer settings - Kill app back press -->
   <java-symbol type="string" name="app_killed_message" />
 
+  <!-- Notification light -->
+  <java-symbol type="array" name="notification_light_package_mapping" />
+
 </resources>
