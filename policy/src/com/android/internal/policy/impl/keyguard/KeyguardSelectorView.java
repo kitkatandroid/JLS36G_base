@@ -82,7 +82,7 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
                 case com.android.internal.R.drawable.ic_action_assist_generic:
                     Intent assistIntent =
                     ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
-                    .getAssistIntent(mContext, UserHandle.USER_CURRENT);
+                    .getAssistIntent(mContext, true, UserHandle.USER_CURRENT);
                     if (assistIntent != null) {
                         mActivityLauncher.launchActivity(assistIntent, false, true, null, null);
                     } else {
@@ -109,11 +109,15 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
                 } else {
                     target -= 1 + mTargetOffset;
                     if (target < mStoredTargets.length && mStoredTargets[target] != null) {
-                        try {
-                            Intent launchIntent = Intent.parseUri(mStoredTargets[target], 0);
-                            mActivityLauncher.launchActivity(launchIntent, false, true, null, null);
-                            return;
-                        } catch (URISyntaxException e) {
+                        if (mStoredTargets[target].equals(GlowPadView.EMPTY_TARGET)) {
+                            mCallback.dismiss(false);
+                        } else {
+                            try {
+                                Intent launchIntent = Intent.parseUri(mStoredTargets[target], 0);
+                                mActivityLauncher.launchActivity(launchIntent, false, true, null, null);
+                                return;
+                            } catch (URISyntaxException e) {
+                            }
                         }
                     }
                 }
@@ -276,7 +280,7 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
             // Update the search icon with drawable from the search .apk
             if (!mSearchDisabled) {
                 Intent intent = ((SearchManager) mContext.getSystemService(Context.SEARCH_SERVICE))
-                        .getAssistIntent(mContext, UserHandle.USER_CURRENT);
+                        .getAssistIntent(mContext, false, UserHandle.USER_CURRENT);
                 if (intent != null) {
                     // XXX Hack. We need to substitute the icon here but haven't formalized
                     // the public API. The "_google" metadata will be going away, so
@@ -308,6 +312,9 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
             final boolean isLandscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
             final Drawable blankActiveDrawable = res.getDrawable(R.drawable.ic_lockscreen_target_activated);
             final InsetDrawable activeBack = new InsetDrawable(blankActiveDrawable, 0, 0, 0, 0);
+            //Magnetic target replacement
+            final Drawable blankInActiveDrawable = res.getDrawable(com.android.internal.R.drawable.ic_lockscreen_lock_pressed);
+            final Drawable unlockActiveDrawable = res.getDrawable(com.android.internal.R.drawable.ic_lockscreen_unlock_activated);
             // Shift targets for landscape lockscreen on phones
             mTargetOffset = isLandscape && !mIsScreenLarge ? 2 : 0;
             if (mTargetOffset == 2) {
@@ -324,14 +331,14 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
                         try {
                             Intent in = Intent.parseUri(uri,0);
                             Drawable front = null;
-                           Drawable back = activeBack;
+                            Drawable back = activeBack;
                             boolean frontBlank = false;
                             if (in.hasExtra(GlowPadView.ICON_FILE)) {
                                 String fSource = in.getStringExtra(GlowPadView.ICON_FILE);
                                 if (fSource != null) {
                                     File fPath = new File(fSource);
                                     if (fPath.exists()) {
-                                        front = new BitmapDrawable(res, BitmapFactory.decodeFile(fSource));
+                                    front = new BitmapDrawable(res, BitmapFactory.decodeFile(fSource));
                                     }
                                 }
                             } else if (in.hasExtra(GlowPadView.ICON_RESOURCE)) {
@@ -385,7 +392,7 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
                             storedDraw.add(new TargetDrawable(res, 0));
                         }
                     } else {
-                        storedDraw.add(new TargetDrawable(res, 0));
+                        storedDraw.add(new TargetDrawable(res, getLayeredDrawable(unlockActiveDrawable, blankInActiveDrawable, tmpInset, true)));
                     }
                 } else {
                     storedDraw.add(new TargetDrawable(res, 0));
@@ -393,12 +400,6 @@ public class KeyguardSelectorView extends LinearLayout implements KeyguardSecuri
             }
             mGlowPadView.setTargetResources(storedDraw);
         }
-
-
-        mGlowPadView.setEnableTarget(com.android.internal.R.drawable
-                .ic_lockscreen_camera, !mCameraDisabled);
-        mGlowPadView.setEnableTarget(com.android.internal.R.drawable
-                .ic_action_assist_generic, !mSearchDisabled);
     }
 
     void doTransition(View view, float to) {
