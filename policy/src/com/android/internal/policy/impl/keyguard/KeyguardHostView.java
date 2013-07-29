@@ -31,10 +31,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.RemoteControlClient;
 import android.os.Looper;
 import android.os.Parcel;
@@ -377,6 +381,7 @@ public class KeyguardHostView extends KeyguardViewBase {
 
         setBackButtonEnabled(false);
 
+        updateBackground();
         addDefaultWidgets();
 
         addWidgetsFromSettings();
@@ -402,6 +407,32 @@ public class KeyguardHostView extends KeyguardViewBase {
 
     private boolean shouldEnableAddWidget() {
         return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
+    }
+
+    private void updateBackground() {
+        String background = Settings.System.getStringForUser(getContext().getContentResolver(),
+                Settings.System.LOCKSCREEN_BACKGROUND, UserHandle.USER_CURRENT);
+
+        if (background == null) {
+            return;
+        }
+
+        if (!background.isEmpty()) {
+            try {
+                setBackgroundColor(Integer.parseInt(background));
+            } catch(NumberFormatException e) {
+                Log.e(TAG, "Invalid background color " + background);
+            }
+        } else {
+            try {
+                Context settingsContext = getContext().createPackageContext("com.android.settings", 0);
+                String wallpaperFile = settingsContext.getFilesDir() + "/lockwallpaper";
+                Bitmap backgroundBitmap = BitmapFactory.decodeFile(wallpaperFile);
+                setBackgroundDrawable(new BitmapDrawable(backgroundBitmap));
+            } catch (NameNotFoundException e) {
+            // Do nothing here
+            }
+        }
     }
 
     private int getDisabledFeatures(DevicePolicyManager dpm) {
