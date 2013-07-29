@@ -405,10 +405,6 @@ public class KeyguardHostView extends KeyguardViewBase {
                 getSystemUiVisibility() | View.STATUS_BAR_DISABLE_BACK);
     }
 
-    private boolean shouldEnableAddWidget() {
-        return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
-    }
-
     private void updateBackground() {
         String background = Settings.System.getStringForUser(getContext().getContentResolver(),
                 Settings.System.LOCKSCREEN_BACKGROUND, UserHandle.USER_CURRENT);
@@ -433,6 +429,10 @@ public class KeyguardHostView extends KeyguardViewBase {
             // Do nothing here
             }
         }
+    }
+
+    private boolean shouldEnableAddWidget() {
+        return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
     }
 
     private int getDisabledFeatures(DevicePolicyManager dpm) {
