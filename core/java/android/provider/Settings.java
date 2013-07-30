@@ -2870,6 +2870,13 @@ public final class Settings {
             "navigation_ring_targets_1",
             "navigation_ring_targets_2",
         };
+        
+        /**
+         * Volume key controls ringtone or media sound stream
+         *
+         * @hide
+         */
+        public static final String VOLUME_KEYS_CONTROL_RING_STREAM = "volume_keys_control_ring_stream";
 
         /**
          * Navigation bar customization
