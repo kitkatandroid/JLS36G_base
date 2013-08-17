@@ -27,6 +27,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -45,7 +46,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.FrameLayout;
 
-import static com.android.internal.util.cm.NavigationRingConstants.*;
+import com.android.internal.util.cm.NavigationRingConstants;
 import com.android.internal.util.cm.NavigationRingHelpers;
 import com.android.internal.widget.multiwaveview.GlowPadView;
 import com.android.internal.widget.multiwaveview.GlowPadView.OnTriggerListener;
@@ -113,7 +114,24 @@ public class SearchPanelView extends FrameLayout implements
 
         public void onTrigger(View v, final int target) {
             final int resId = mGlowPadView.getResourceIdForTarget(target);
-            mActionTarget.launchAction(mTargetActivities[target - mStartPosOffset]);
+            String action = mTargetActivities[target - mStartPosOffset];
+            boolean isAssist = NavigationRingConstants.ACTION_ASSIST.equals(action);
+            Bundle options = null;
+
+            if (isAssist) {
+                ActivityOptions opts = ActivityOptions.makeCustomAnimation(mContext,
+                        R.anim.search_launch_enter, R.anim.search_launch_exit,
+                        getHandler(), SearchPanelView.this);
+                options = opts.toBundle();
+                mWaitingForLaunch = true;
+                vibrate();
+            }
+
+            boolean result = mActionTarget.launchAction(
+                    mTargetActivities[target - mStartPosOffset], options);
+            if (!result && isAssist) {
+                onAnimationStarted();
+            }
         }
 
         public void onFinishFinalAnimation() {
@@ -209,7 +227,7 @@ public class SearchPanelView extends FrameLayout implements
 
     private boolean hasValidTargets() {
         for (String target : mTargetActivities) {
-            if (!TextUtils.isEmpty(target)) {
+            if (!TextUtils.isEmpty(target) && !target.equals(NavigationRingConstants.ACTION_NONE)) {
                 return true;
             }
         }
