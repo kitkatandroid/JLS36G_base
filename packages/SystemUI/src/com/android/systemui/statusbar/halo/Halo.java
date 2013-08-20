@@ -1300,7 +1300,6 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
             mHaloBubble.draw(canvas);
             canvas.restoreToCount(state);
 
-
             // Number
             if (mState == State.IDLE || mState == State.GESTURES) {
                 state = canvas.save();
