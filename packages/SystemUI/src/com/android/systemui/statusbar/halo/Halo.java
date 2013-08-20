@@ -1107,7 +1107,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
                                 public void onAnimationUpdate(ValueAnimator animation) {
                                     pingRadius = (int)((pingMaxRadius - pingMinRadius) *
                                             animation.getAnimatedFraction()) + pingMinRadius;
-                                    invalidate();
+                                    postInvalidate();
                                 }});
 
                     // prevent ping spam            
@@ -1207,7 +1207,6 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
             }
 
             // Content
-            state = canvas.save();
             final int tickerHeight = mHaloTickerWrapper.getMeasuredHeight();
             int ch = mGesture == Gesture.TASK ? 0 : tickerHeight / 2;
             int cw = mHaloTickerWrapper.getMeasuredWidth();
@@ -1301,6 +1300,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
             mHaloBubble.draw(canvas);
             canvas.restoreToCount(state);
 
+
             // Number
             if (mState == State.IDLE || mState == State.GESTURES) {
                 state = canvas.save();
@@ -1332,9 +1332,6 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         mEffect.msgNumberFlipAnimator.cancel(true);
         mEffect.tickerAnimator.cancel(true);
         mEffect.mHaloNumber.setAlpha(0f);
-        mEffect.mHaloCount.setAlpha(0f);
-        mEffect.mHaloPinned.setAlpha(0f);
-        mEffect.mHaloSystemIcon.setAlpha(0f);
         mEffect.mHaloNumberIcon.setAlpha(0f);
         mContentIntent = null;
         mCurrentNotficationEntry = null;
@@ -1386,7 +1383,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         if (entry.notification.getPackageName().equals("com.paranoid.halo")) {
             msgType = HaloProperties.MessageType.PINNED;
         } else if (!entry.notification.isClearable()) {
-            msgType = HaloProperties.MessageType.SYSTEM;
+            msgType = HaloProperties.MessageType.PINNED;
         } else {
             msgType = HaloProperties.MessageType.MESSAGE;
         }
