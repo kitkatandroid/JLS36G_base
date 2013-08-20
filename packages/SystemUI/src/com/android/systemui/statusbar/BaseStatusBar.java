@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2010 The Android Open Source Project
  *
@@ -158,7 +157,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected WindowManager mWindowManager;
     protected IWindowManager mWindowManagerService;
-    protected abstract void refreshLayout(int layoutDirection);
 
     protected Display mDisplay;
 
@@ -400,16 +398,6 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
         return notificationUserId == UserHandle.USER_ALL
                 || thisUserId == notificationUserId;
-    }
-
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        final Locale newLocale = mContext.getResources().getConfiguration().locale;
-        if (! newLocale.equals(mLocale)) {
-            mLocale = newLocale;
-            mLayoutDirection = TextUtils.getLayoutDirectionFromLocale(mLocale);
-            refreshLayout(mLayoutDirection);
-        }
     }
 
     protected View updateNotificationVetoButton(View row, StatusBarNotification n) {
