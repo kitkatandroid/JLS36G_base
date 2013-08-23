@@ -291,6 +291,9 @@ public class WindowManagerService extends IWindowManager.Stub
 
     private final boolean mHeadless;
 
+    private static final float THUMBNAIL_ANIMATION_DECELERATE_FACTOR = 1.5f;
+
+
     private BroadcastReceiver mThemeChangeReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             mUiContext = null;

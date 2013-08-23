@@ -16,6 +16,9 @@
 
 package com.android.server;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+
 import com.android.internal.app.ThemeUtils;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -91,6 +94,7 @@ public class DeviceStorageMonitorService extends Binder {
     private Context mContext;
     private Context mUiContext;
     private ContentResolver mResolver;
+    //private Context mUiContext;
     private long mTotalMemory;  // on /data
     private StatFs mDataFileStats;
     private StatFs mSystemFileStats;

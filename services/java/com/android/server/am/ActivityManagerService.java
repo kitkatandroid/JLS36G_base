@@ -12909,12 +12909,12 @@ public final class ActivityManagerService  extends ActivityManagerNative
         return srec.launchedFromUid;
     }
 
-    private void saveThemeResourceLocked(CustomTheme t, boolean isDiff){
-        if(isDiff){
-            SystemProperties.set(Configuration.THEME_ID_PERSISTENCE_PROPERTY, t.getThemeId());
-            SystemProperties.set(Configuration.THEME_PACKAGE_NAME_PERSISTENCE_PROPERTY, t.getThemePackageName());  
-        }
-    }
+    //private void saveThemeResourceLocked(CustomTheme t, boolean isDiff){
+        //if(isDiff){
+            //SystemProperties.set(Configuration.THEME_ID_PERSISTENCE_PROPERTY, t.getThemeId());
+            //SystemProperties.set(Configuration.THEME_PACKAGE_NAME_PERSISTENCE_PROPERTY, t.getThemePackageName());  
+        //}
+    //}
 
     public String getLaunchedFromPackage(IBinder activityToken) {
         ActivityRecord srec = ActivityRecord.forToken(activityToken);
@@ -12922,6 +12922,13 @@ public final class ActivityManagerService  extends ActivityManagerNative
             return null;
         }
         return srec.launchedFromPackage;
+     }
+     
+    private void saveThemeResourceLocked(CustomTheme t, boolean isDiff){
+        if(isDiff){
+            SystemProperties.set(Configuration.THEME_ID_PERSISTENCE_PROPERTY, t.getThemeId());
+            SystemProperties.set(Configuration.THEME_PACKAGE_NAME_PERSISTENCE_PROPERTY, t.getThemePackageName());  
+        }
     }
 
     // =========================================================

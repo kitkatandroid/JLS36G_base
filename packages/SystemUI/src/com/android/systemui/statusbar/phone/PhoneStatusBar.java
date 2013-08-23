@@ -38,7 +38,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.CustomTheme; 
+import android.content.res.CustomTheme;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
@@ -64,7 +64,7 @@ import android.service.dreams.IDreamManager;
 import android.util.DisplayMetrics;
 import android.util.EventLog;
 import android.util.Log;
-import android.util.Pair; 
+import android.util.Pair;
 import android.util.Slog;
 import android.view.Display;
 import android.view.Gravity;
@@ -85,6 +85,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -279,6 +280,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     // last theme that was applied in order to detect theme change (as opposed
     // to some other configuration change).
     CustomTheme mCurrentTheme;
+
     //private boolean mRecreating = false;
 
     private boolean mBrightnessControl = true;
@@ -482,7 +484,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         try {
             boolean showNav = mWindowManagerService.hasNavigationBar();
             if (DEBUG) Slog.v(TAG, "hasNavigationBar=" + showNav);
-            if (showNav && !mRecreating) { 
+            if (showNav && !mRecreating) {
                 mNavigationBarView =
                     (NavigationBarView) View.inflate(context, R.layout.navigation_bar, null);
 
@@ -916,14 +918,20 @@ public class PhoneStatusBar extends BaseStatusBar {
     private void repositionNavigationBar() {
         if (mNavigationBarView == null) return;
 
-        prepareNavigationBarView();
-
         CustomTheme newTheme = mContext.getResources().getConfiguration().customTheme;
         if (newTheme != null &&
                 (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
             // Nevermind, this will be re-created
             return;
-        } 
+        }
+        prepareNavigationBarView();
+
+        //CustomTheme newTheme = mContext.getResources().getConfiguration().customTheme;
+        //if (newTheme != null &&
+                //(mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
+            // Nevermind, this will be re-created
+            //return;
+        //} 
 
         mWindowManager.updateViewLayout(mNavigationBarView, getNavigationBarLayoutParams());
     }
@@ -1079,7 +1087,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                 notification.getNotification().fullScreenIntent.send();
             } catch (PendingIntent.CanceledException e) {
             }
-        } else if (!mRecreating) { 
+        } else if (!mRecreating) {
             // usual case: status bar visible & not immersive
 
             // show the ticker if there isn't an intruder too
@@ -1530,7 +1538,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         lp.flags &= ~WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.flags |= WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-        mWindowManager.updateViewLayout(mStatusBarContainer, lp); 
+        mWindowManager.updateViewLayout(mStatusBarContainer, lp);
 
         // Updating the window layout will force an expensive traversal/redraw.
         // Kick off the reveal animation after this is complete to avoid animation latency.
@@ -2467,7 +2475,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     private void addStatusBarWindow() {
         // Put up the view
         final int height = getStatusBarHeight();
-
         // Now that the status bar window encompasses the sliding panel and its
         // translucent backdrop, the entire thing is made TRANSLUCENT and is
         // hardware-accelerated.
@@ -2489,7 +2496,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         makeStatusBarView();
         mNavigationBarView.updateResources();
         mStatusBarContainer.addView(mStatusBarWindow);
-        mWindowManager.addView(mStatusBarContainer, lp); 
+        mWindowManager.addView(mStatusBarContainer, lp);
     }
 
     void setNotificationIconVisibility(boolean visible, int anim) {
@@ -2839,7 +2846,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (mClearButton instanceof TextView) {
                 ((TextView)mClearButton).setText(context.getText(R.string.status_bar_clear_all_button));
             }
-            loadDimens(); 
+            loadDimens();
         }
 
         // Update the QuickSettings container

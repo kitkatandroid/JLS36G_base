@@ -215,6 +215,7 @@ public class AssetRedirectionManagerService extends IAssetRedirectionManager.Stu
                 return;
             }
 
+
             for (Map.Entry<RedirectionKey, PackageRedirectionMap> entry: mRedirections.entrySet()) {
                 PackageRedirectionMap map = entry.getValue();
                 if (map != null && map.getPackageId() != -1) {
@@ -393,7 +394,6 @@ public class AssetRedirectionManagerService extends IAssetRedirectionManager.Stu
         private void processItemTag() throws XmlPullParserException, IOException {
             XmlPullParser parser = mParser;
             String fromName = parser.getAttributeValue(null, "name");
-
             if (TextUtils.isEmpty(fromName)) {
                 Log.w(TAG, "Missing android:name attribute on <item> tag at " + getResourceLabel() + " " +
                         parser.getPositionDescription());
