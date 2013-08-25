@@ -2477,12 +2477,12 @@ public final class Settings {
         public static final String STATUSBAR_CLOCK_STYLE = "statusbar_clock_style";
 
        /**
-	* @hide
-	* Shows weekday before clock time
-	* 0 - No Day
-	* 1 - Small Day
-	* 2 - Normal Day
-	*/
+        * @hide
+        * Shows weekday before clock time
+        * 0 - No Day
+        * 1 - Small Day
+        * 2 - Normal Day
+        */
         public static final String STATUSBAR_CLOCK_WEEKDAY = "statusbar_clock_weekday";
 
         /**
