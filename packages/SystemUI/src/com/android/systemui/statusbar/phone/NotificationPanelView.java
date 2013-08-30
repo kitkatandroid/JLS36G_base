@@ -120,12 +120,6 @@ public class NotificationPanelView extends PanelView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean shouldRecycleEvent = false;
-        if (DEBUG_GESTURES) {
-            if (event.getActionMasked() != MotionEvent.ACTION_MOVE) {
-                EventLog.writeEvent(EventLogTags.SYSUI_NOTIFICATIONPANEL_TOUCH,
-                       event.getActionMasked(), (int) event.getX(), (int) event.getY());
-            }
-        }
         if (PhoneStatusBar.SETTINGS_DRAG_SHORTCUT && mStatusBar.mHasFlipSettings) {
             boolean flip = false;
             boolean swipeFlipJustFinished = false;
