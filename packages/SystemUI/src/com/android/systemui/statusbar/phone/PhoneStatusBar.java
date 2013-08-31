@@ -1549,17 +1549,25 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mNotificationButtonAnim != null) mNotificationButtonAnim.cancel();
         if (mClearButtonAnim != null) mClearButtonAnim.cancel();
 
+        final boolean halfWayDone = mScrollView.getVisibility() == View.VISIBLE;
+        final int zeroOutDelays = halfWayDone ? 0 : 1;
+
+        if (!halfWayDone) {
+            mScrollView.setScaleX(0f);
+            mFlipSettingsView.setScaleX(1f);
+        }
+
         mScrollView.setVisibility(View.VISIBLE);
         mScrollViewAnim = start(
-            startDelay(FLIP_DURATION_OUT,
+            startDelay(FLIP_DURATION_OUT * zeroOutDelays,
                 interpolator(mDecelerateInterpolator,
-                    ObjectAnimator.ofFloat(mScrollView, View.SCALE_X, 0f, 1f)
+                    ObjectAnimator.ofFloat(mScrollView, View.SCALE_X, 1f)
                         .setDuration(FLIP_DURATION_IN)
                     )));
         mFlipSettingsViewAnim = start(
             setVisibilityWhenDone(
                 interpolator(mAccelerateInterpolator,
-                        ObjectAnimator.ofFloat(mFlipSettingsView, View.SCALE_X, 1f, 0f)
+                        ObjectAnimator.ofFloat(mFlipSettingsView, View.SCALE_X, 0f)
                         )
                     .setDuration(FLIP_DURATION_OUT),
                 mFlipSettingsView, View.INVISIBLE));
@@ -1679,18 +1687,25 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mNotificationButtonAnim != null) mNotificationButtonAnim.cancel();
         if (mClearButtonAnim != null) mClearButtonAnim.cancel();
 
+        final boolean halfWayDone = mFlipSettingsView.getVisibility() == View.VISIBLE;
+        final int zeroOutDelays = halfWayDone ? 0 : 1;
+
+        if (!halfWayDone) {
+            mFlipSettingsView.setScaleX(0f);
+            mScrollView.setScaleX(1f);
+        }
+
         mFlipSettingsView.setVisibility(View.VISIBLE);
-        mFlipSettingsView.setScaleX(0f);
         mFlipSettingsViewAnim = start(
-            startDelay(FLIP_DURATION_OUT,
+            startDelay(FLIP_DURATION_OUT * zeroOutDelays,
                 interpolator(mDecelerateInterpolator,
-                    ObjectAnimator.ofFloat(mFlipSettingsView, View.SCALE_X, 0f, 1f)
+                    ObjectAnimator.ofFloat(mFlipSettingsView, View.SCALE_X, 1f)
                         .setDuration(FLIP_DURATION_IN)
                     )));
         mScrollViewAnim = start(
             setVisibilityWhenDone(
                 interpolator(mAccelerateInterpolator,
-                        ObjectAnimator.ofFloat(mScrollView, View.SCALE_X, 1f, 0f)
+                        ObjectAnimator.ofFloat(mScrollView, View.SCALE_X, 0f)
                         )
                     .setDuration(FLIP_DURATION_OUT),
                 mScrollView, View.INVISIBLE));
