@@ -75,6 +75,7 @@ import android.view.Surface;
 import android.view.VolumePanel;
 import android.view.WindowManager;
 
+import com.android.internal.app.ThemeUtils; 
 import com.android.internal.telephony.ITelephony;
 import com.android.internal.util.XmlUtils;
 
@@ -565,6 +566,13 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         pkgFilter.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
         pkgFilter.addDataScheme("package");
         context.registerReceiver(mReceiver, pkgFilter);
+
+        ThemeUtils.registerThemeChangeReceiver(context, new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mUiContext = null;
+            }
+        }); 
 
         // Register for phone state monitoring
         TelephonyManager tmgr = (TelephonyManager)
@@ -4242,6 +4250,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4260,6 +4269,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4278,6 +4288,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4286,7 +4297,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 }
             });
         }
-    }
+    } 
 
     private void showVolumeChangeUi(final int streamType, final int flags) {
         if (mUiContext != null && mVolumePanel != null) {
@@ -4296,6 +4307,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4305,7 +4317,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
             });
         }
     }
-
+ 
     private void remoteVolumeChanged(final int streamType, final int flags) {
         if (mUiContext != null && mVolumePanel != null) {
             mVolumePanel.postRemoteVolumeChanged(streamType, flags);
@@ -4314,6 +4326,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4332,6 +4345,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4350,6 +4364,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 @Override
                 public void run() {
                     if (mUiContext == null) {
+                        mUiContext = ThemeUtils.createUiContext(mContext);
                     }
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
@@ -4358,7 +4373,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                 }
             });
         }
-    }
+    } 
 
     //==========================================================================================
     // AudioFocus
@@ -6273,7 +6288,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
                                 synchronized (mMainRemote) {
                                     if (rccId == mMainRemote.mRccId) {
                                         mMainRemote.mVolumeHandling = value;
-                                        mVolumePanel.postHasNewRemotePlaybackInfo();
+                                        hasNewRemotePlaybackInfo();
                                     }
                                 }
                                 break;
