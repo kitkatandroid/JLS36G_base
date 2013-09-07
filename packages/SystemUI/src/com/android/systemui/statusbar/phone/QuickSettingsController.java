@@ -24,6 +24,7 @@ import static com.android.internal.util.cm.QSConstants.TILE_BLUETOOTH;
 import static com.android.internal.util.cm.QSConstants.TILE_BRIGHTNESS;
 import static com.android.internal.util.cm.QSConstants.TILE_CAMERA;
 import static com.android.internal.util.cm.QSConstants.TILE_DELIMITER;
+import static com.android.internal.util.cm.QSConstants.TILE_EXPANDEDDESKTOP;
 import static com.android.internal.util.cm.QSConstants.TILE_GPS;
 import static com.android.internal.util.cm.QSConstants.TILE_LOCKSCREEN;
 import static com.android.internal.util.cm.QSConstants.TILE_MOBILEDATA;
@@ -79,6 +80,7 @@ import com.android.systemui.quicksettings.WiFiDisplayTile;
 import com.android.systemui.quicksettings.WiFiTile;
 import com.android.systemui.quicksettings.WifiAPTile;
 import com.android.systemui.quicksettings.FChargeTile;
+import com.android.systemui.quicksettings.ExpandedDesktopTile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,7 +207,13 @@ public class QuickSettingsController {
                 // User cannot add the fast charge tile if the device does not support it 
                 // No need to check again here 
                 qs = new FChargeTile(mContext, this, mHandler); 
-                } 
+            } else if (tile.equals(TILE_EXPANDEDDESKTOP)) {
+                mTileStatusUris.add(Settings.System.getUriFor(Settings.System.EXPANDED_DESKTOP_STYLE));
+                if (expandedDesktopEnabled(resolver)) {
+                    qs = new ExpandedDesktopTile(mContext, this, mHandler);
+                }
+            }
+
             if (qs != null) {
                 qs.setupQuickSettingsTile(inflater, mContainerView);
                 mQuickSettingsTiles.add(qs);
