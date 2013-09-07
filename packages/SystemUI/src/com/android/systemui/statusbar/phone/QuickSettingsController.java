@@ -209,7 +209,7 @@ public class QuickSettingsController {
                 qs = new FChargeTile(mContext, this, mHandler); 
             } else if (tile.equals(TILE_EXPANDEDDESKTOP)) {
                 mTileStatusUris.add(Settings.System.getUriFor(Settings.System.EXPANDED_DESKTOP_STYLE));
-                if (expandedDesktopEnabled(resolver)) {
+                if (QSUtils.expandedDesktopEnabled(resolver)) {
                     qs = new ExpandedDesktopTile(mContext, this, mHandler);
                 }
             }
