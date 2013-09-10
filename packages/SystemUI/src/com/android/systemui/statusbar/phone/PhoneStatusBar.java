@@ -329,15 +329,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SCREEN_BRIGHTNESS_MODE), false, this);
-<<<<<<< HEAD
-=======
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NOTIFICATION_SHADE_DIM), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CARRIER), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.AUTO_HIDE_STATUSBAR), false, this, UserHandle.USER_ALL); 
->>>>>>> 6be56d7... Frameworks: Auto hide statusbar (1/2)
             update();
         }
 
@@ -348,26 +341,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
-<<<<<<< HEAD
             boolean autoBrightness = Settings.System.getInt(
                     resolver, Settings.System.SCREEN_BRIGHTNESS_MODE, 0) ==
                     Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
             mBrightnessControl = !autoBrightness && Settings.System.getInt(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
-=======
-            int brightnessValue = Settings.System.getIntForUser(resolver,
-                    Settings.System.SCREEN_BRIGHTNESS_MODE, 0, UserHandle.USER_CURRENT);
-            mBrightnessControl = brightnessValue != Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-                    && Settings.System.getIntForUser(resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
-                            0, UserHandle.USER_CURRENT) == 1;
-            mNotificationShadeDim = Settings.System.getIntForUser(
-                    resolver, Settings.System.NOTIFICATION_SHADE_DIM,
-                    ActivityManager.isHighEndGfx() ? 1 : 0, UserHandle.USER_CURRENT) == 1;
-            mShowCarrierLabel = Settings.System.getIntForUser(
-                    resolver, Settings.System.STATUS_BAR_CARRIER, 0, UserHandle.USER_CURRENT) == 1;
-            showCarrierLabel(mShowCarrierLabel);
             updateStatusBarVisibility(); 
->>>>>>> 6be56d7... Frameworks: Auto hide statusbar (1/2)
         }
     }
 
@@ -790,6 +769,25 @@ public class PhoneStatusBar extends BaseStatusBar {
     void onBarViewDetached() {
      //   WindowManagerImpl.getDefault().removeView(mStatusBarWindow);
     } 
+
+    @Override
+    public void toggleNotificationShade() {
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.TOGGLE_NOTIFICATION_SHADE,
+                (mExpandedVisible) ? 0 : 1);
+
+        int msg = (mExpandedVisible)
+                ? MSG_CLOSE_PANELS : MSG_OPEN_NOTIFICATION_PANEL;
+        mHandler.removeMessages(msg);
+        mHandler.sendEmptyMessage(msg);
+    }
+
+    @Override
+    public void toggleStatusBar(boolean enable) {
+        Settings.System.putInt(mContext.getContentResolver(),
+                Settings.System.TOGGLE_NOTIFICATION_SHADE,
+                enable ? 1 : 0);
+    }
 
     @Override
     protected void updateSearchPanel() {
