@@ -556,7 +556,7 @@
     <!-- Quick Settings -->
     <string name="quick_settings_gps">GPS</string>
     <string name="quick_settings_gps_off">GPS off</string>
-    <string name="quick_settings_screen_sleep">Go to sleep</string>
+    <string name="quick_settings_power">Power</string>
     <string name="quick_settings_vibration_on">Vibration on</string>
     <string name="quick_settings_vibration_off">Vibration off</string>
     <string name="quick_settings_label_enabled">On</string>
