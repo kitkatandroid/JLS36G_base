@@ -37,11 +37,24 @@ public class BatteryController extends BroadcastReceiver {
     private ArrayList<ImageView> mIconViews = new ArrayList<ImageView>();
     private ArrayList<TextView> mLabelViews = new ArrayList<TextView>();
 
+    private boolean mBatteryPlugged = false;
+    private int mBatteryLevel = 0;
+
     private ArrayList<BatteryStateChangeCallback> mChangeCallbacks =
             new ArrayList<BatteryStateChangeCallback>();
 
+    // For HALO Mods
+    private ArrayList<BatteryStateChangeCallbackHalo> mChangeCallbacksHalo =
+            new ArrayList<BatteryStateChangeCallbackHalo>();
+	
+
     public interface BatteryStateChangeCallback {
         public void onBatteryLevelChanged(int level, boolean pluggedIn);
+    }
+
+    //For HALO Mods
+    public interface BatteryStateChangeCallbackHalo {
+        public void onBatteryLevelChangedHalo(int level, boolean pluggedIn);
     }
 
     public BatteryController(Context context) {
@@ -63,6 +76,16 @@ public class BatteryController extends BroadcastReceiver {
     public void addStateChangedCallback(BatteryStateChangeCallback cb) {
         mChangeCallbacks.add(cb);
     }
+
+    // For Halo Mods
+    public void addStateChangedCallbackHalo(BatteryStateChangeCallbackHalo cb_Halo) {
+        mChangeCallbacksHalo.add(cb_Halo);
+    }
+
+    // For Halo Mods
+    public void removeStateChangedCallbackHalo(BatteryStateChangeCallbackHalo cb_Halo) {
+        mChangeCallbacksHalo.remove(cb_Halo);
+    }	
 
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
@@ -96,6 +119,11 @@ public class BatteryController extends BroadcastReceiver {
                 v.setText(mContext.getString(R.string.status_bar_settings_battery_meter_format,
                         level));
             }
+
+	// For HALO Mods
+	for (BatteryStateChangeCallbackHalo cb_Halo : mChangeCallbacksHalo) {
+            cb_Halo.onBatteryLevelChangedHalo(mBatteryLevel, mBatteryPlugged);
+        }
 
             for (BatteryStateChangeCallback cb : mChangeCallbacks) {
                 cb.onBatteryLevelChanged(level, plugged);
