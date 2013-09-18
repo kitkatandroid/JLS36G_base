@@ -81,6 +81,10 @@ public abstract class Ticker {
         public StaticLayout getLayout(CharSequence substr) {
             int w = mTextSwitcher.getWidth() - mTextSwitcher.getPaddingLeft()
                     - mTextSwitcher.getPaddingRight();
+	    //Ugly fix for negative int exception
+      		if (w < 0){
+    		w = 20;
+      		} 
             return new StaticLayout(substr, mPaint, w, Alignment.ALIGN_NORMAL, 1, 0, true);
         }
 

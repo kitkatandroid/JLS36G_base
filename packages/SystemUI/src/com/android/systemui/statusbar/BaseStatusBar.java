@@ -19,18 +19,6 @@ package com.android.systemui.statusbar;
 
 import android.service.notification.StatusBarNotification;
 import android.content.res.Configuration;
-import com.android.internal.statusbar.IStatusBarService;
-import com.android.internal.statusbar.StatusBarIcon;
-import com.android.internal.statusbar.StatusBarIconList;
-import com.android.internal.widget.SizeAdaptiveLayout;
-import com.android.systemui.R;
-import com.android.systemui.SearchPanelView;
-import com.android.systemui.SystemUI;
-import com.android.systemui.recent.RecentTasksLoader;
-import com.android.systemui.recent.RecentsActivity;
-import com.android.systemui.recent.TaskDescription;
-import com.android.systemui.statusbar.policy.NotificationRowLayout;
-import com.android.systemui.statusbar.tablet.StatusBarPanel;
 
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
@@ -38,6 +26,7 @@ import android.app.ActivityOptions;
 import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.app.Notification;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -49,7 +38,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable; 
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode; 
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -80,6 +73,20 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+
+import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.statusbar.StatusBarIcon;
+import com.android.internal.statusbar.StatusBarIconList;
+import com.android.internal.widget.SizeAdaptiveLayout;
+import com.android.systemui.R;
+import com.android.systemui.SearchPanelView;
+import com.android.systemui.SystemUI;
+import com.android.systemui.recent.RecentTasksLoader;
+import com.android.systemui.recent.RecentsActivity;
+import com.android.systemui.recent.TaskDescription;
+import com.android.systemui.statusbar.BaseStatusBar;
+import com.android.systemui.statusbar.policy.NotificationRowLayout;
+import com.android.systemui.statusbar.tablet.StatusBarPanel; 
 import com.android.systemui.statusbar.halo.Halo;
 import com.android.systemui.statusbar.phone.Ticker;
 
@@ -159,6 +166,14 @@ public abstract class BaseStatusBar extends SystemUI implements
     public Ticker getTicker() {
         return mTicker;
     }
+
+    public NotificationData getNotificationData() {
+        return mNotificationData;
+    }
+
+    public IStatusBarService getService() {
+        return mBarService;
+    } 
 
     public IStatusBarService getStatusBarService() {
         return mBarService;
@@ -303,8 +318,9 @@ public abstract class BaseStatusBar extends SystemUI implements
                 }
             }}, filter);
 
-        mLocale = mContext.getResources().getConfiguration().locale;
-        // Listen for HALO state
+        mLocale = mContext.getResources().getConfiguration().locale;    
+        
+    // Listen for HALO state 
         mContext.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.HALO_ACTIVE), false, new ContentObserver(new Handler()) {
             @Override
@@ -313,6 +329,7 @@ public abstract class BaseStatusBar extends SystemUI implements
             }});
 
         updateHalo();
+    }
 
     public void setHaloTaskerActive(boolean haloTaskerActive, boolean updateNotificationIcons) {
         mHaloTaskerActive = haloTaskerActive;
@@ -350,8 +367,6 @@ public abstract class BaseStatusBar extends SystemUI implements
                 mHalo = null;
             }
         }
-    }
-	
     }
 
     public void userSwitched(int newUserId) {
@@ -1195,7 +1210,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         boolean updateTicker = notification.getNotification().tickerText != null
                 && !TextUtils.equals(notification.getNotification().tickerText,
-                        oldEntry.getnotification.notification.tickerText)) || mHaloActive;
+                        oldEntry.notification.getNotification().tickerText) || mHaloActive;
 
         boolean isTopAnyway = isTopNotification(rowParent, oldEntry);
         if (contentsUnchanged && bigContentsUnchanged && (orderUnchanged || isTopAnyway)) {
@@ -1210,7 +1225,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 				
                 // update the contentIntent floatingIntent
                 final PendingIntent contentIntent = notification.getNotification().contentIntent;
-
                 if (contentIntent != null) {
                     final View.OnClickListener listener = makeClicker(contentIntent,
                             notification.getPackageName(), notification.getTag(), notification.getId());
