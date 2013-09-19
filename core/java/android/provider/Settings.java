@@ -2463,6 +2463,12 @@ public final class Settings {
         public static final String ACTIVE_DISPLAY_ALL_NOTIFICATIONS = "active_display_all_notifications";
 
         /**
+         * Whether to invert the colors when in bright light
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_SUNLIGHT_MODE = "active_display_sunlight_mode";         
+
+        /**
          * @deprecated Use {@link android.provider.Settings.Global#DESK_DOCK_SOUND}
          * instead
          * @hide
