@@ -433,6 +433,10 @@ public class PhoneStatusBar extends BaseStatusBar {
         mHasFlipSettings = res.getBoolean(R.bool.config_hasFlipSettingsPanel);
 
         mDateTimeView = mNotificationPanelHeader.findViewById(R.id.datetime);
+        if (mDateTimeView != null) {
+            mDateTimeView.setOnClickListener(mClockClickListener);
+            mDateTimeView.setEnabled(true);
+        }
 
         mSettingsButton = (ImageView) mStatusBarWindow.findViewById(R.id.settings_button);
         if (mSettingsButton != null) {
@@ -2326,7 +2330,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
     };
 
-<<<<<<< HEAD
     private View.OnClickListener mHaloButtonListener = new View.OnClickListener() {
         public void onClick(View v) {
             // Activate HALO
@@ -2347,10 +2350,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     };
 
     private View.OnClickListener mNotificationButtonListener = new View.OnClickListener() {
-=======
-    private final View.OnClickListener mNotificationButtonListener = new View.OnClickListener() {
-        @Override
->>>>>>> 7916ca9... Remove redundant click action from date & time container layout
         public void onClick(View v) {
             animateExpandNotificationsPanel();
         }
