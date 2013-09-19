@@ -2101,6 +2101,12 @@ public final class Settings {
          */
         public static final String VIBRATE_WHEN_RINGING = "vibrate_when_ringing";
 
+        /**
+	 * Statusbar State
+	 * @hide
+	 */
+        public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state"; 
+
 	/**
          * HALO, should default to 0 (no, do not show)
          * @hide
