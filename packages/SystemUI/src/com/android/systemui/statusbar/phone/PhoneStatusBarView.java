@@ -21,6 +21,7 @@ import android.app.StatusBarManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.EventLog;
 import android.util.Slog;
