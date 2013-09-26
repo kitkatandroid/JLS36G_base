@@ -42,9 +42,6 @@
         <attr name="decayTime" format="integer" />
         <attr name="orientation" />
     </declare-styleable>
-    <declare-styleable name="BatteryBarController">
-        <attr name="viewLocation" format="integer" />
-    </declare-styleable>
 
     <attr name="orientation">
         <enum name="horizontal" value="0" />
