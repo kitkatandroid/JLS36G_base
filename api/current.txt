@@ -2699,6 +2699,7 @@ package android.app {
     method public void finishActivity(int);
     method public void finishActivityFromChild(android.app.Activity, int);
     method public void finishAffinity();
+    method public void finishFloating();
     method public void finishFromChild(android.app.Activity);
     method public android.app.ActionBar getActionBar();
     method public final android.app.Application getApplication();
@@ -3738,6 +3739,14 @@ package android.app {
     field public android.content.pm.ResolveInfo resolveInfo;
   }
 
+  public class LayerActivity extends android.app.Activity {
+    ctor public LayerActivity();
+    method public void onCreate(android.os.Bundle);
+    method public void onResume();
+    method public void onStart();
+    method public void onStop();
+  }
+
   public class ListActivity extends android.app.Activity {
     ctor public ListActivity();
     method public android.widget.ListAdapter getListAdapter();
@@ -4175,6 +4184,7 @@ package android.app {
     method public android.content.Intent[] getIntents();
     method public android.app.PendingIntent getPendingIntent(int, int);
     method public android.app.PendingIntent getPendingIntent(int, int, android.os.Bundle);
+    method public void setTaskOnHome(boolean);
     method public void startActivities();
     method public void startActivities(android.os.Bundle);
   }
@@ -6240,6 +6250,7 @@ package android.content {
     field public static final int FLAG_ACTIVITY_TASK_ON_HOME = 16384; // 0x4000
     field public static final int FLAG_DEBUG_LOG_RESOLUTION = 8; // 0x8
     field public static final int FLAG_EXCLUDE_STOPPED_PACKAGES = 16; // 0x10
+    field public static final int FLAG_FLOATING_WINDOW = 8192; // 0x2000
     field public static final int FLAG_FROM_BACKGROUND = 4; // 0x4
     field public static final int FLAG_GRANT_READ_URI_PERMISSION = 1; // 0x1
     field public static final int FLAG_GRANT_WRITE_URI_PERMISSION = 2; // 0x2
@@ -7293,10 +7304,10 @@ package android.content.res {
     field public static final int TOUCHSCREEN_NOTOUCH = 1; // 0x1
     field public static final deprecated int TOUCHSCREEN_STYLUS = 2; // 0x2
     field public static final int TOUCHSCREEN_UNDEFINED = 0; // 0x0
-    field public static final int UI_INVERTED_MODE_UNDEFINED = 0; // 0x0
-    field public static final int UI_INVERTED_MODE_NORMAL = 1; // 0x1
-    field public static final int UI_INVERTED_MODE_YES = 2; // 0x2
     field public static final int UI_INVERTED_MODE_NO = 3; // 0x3
+    field public static final int UI_INVERTED_MODE_NORMAL = 1; // 0x1
+    field public static final int UI_INVERTED_MODE_UNDEFINED = 0; // 0x0
+    field public static final int UI_INVERTED_MODE_YES = 2; // 0x2
     field public static final int UI_MODE_NIGHT_MASK = 48; // 0x30
     field public static final int UI_MODE_NIGHT_NO = 16; // 0x10
     field public static final int UI_MODE_NIGHT_UNDEFINED = 0; // 0x0
@@ -20002,9 +20013,11 @@ package android.provider {
     field public static final java.lang.String INPUT_METHOD_SELECTOR_VISIBILITY = "input_method_selector_visibility";
     field public static final deprecated java.lang.String INSTALL_NON_MARKET_APPS = "install_non_market_apps";
     field public static final java.lang.String LOCATION_PROVIDERS_ALLOWED = "location_providers_allowed";
+    field public static final java.lang.String LOCK_DOTS_VISIBLE = "lock_pattern_dotsvisible";
     field public static final java.lang.String LOCK_PATTERN_ENABLED = "lock_pattern_autolock";
     field public static final deprecated java.lang.String LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED = "lock_pattern_tactile_feedback_enabled";
     field public static final java.lang.String LOCK_PATTERN_VISIBLE = "lock_pattern_visible_pattern";
+    field public static final java.lang.String LOCK_SHOW_ERROR_PATH = "lock_pattern_show_error_path";
     field public static final deprecated java.lang.String LOGGING_ID = "logging_id";
     field public static final deprecated java.lang.String NETWORK_PREFERENCE = "network_preference";
     field public static final java.lang.String PARENTAL_CONTROL_ENABLED = "parental_control_enabled";
@@ -21285,6 +21298,16 @@ package android.service.notification {
     method public boolean isOngoing();
     method public void writeToParcel(android.os.Parcel, int);
     field public static final android.os.Parcelable.Creator CREATOR;
+    field public final java.lang.String basePkg;
+    field public final int id;
+    field public final int initialPid;
+    field public final android.app.Notification notification;
+    field public final java.lang.String pkg;
+    field public final long postTime;
+    field public final int score;
+    field public final java.lang.String tag;
+    field public final int uid;
+    field public final android.os.UserHandle user;
   }
 
 }
@@ -26989,6 +27012,7 @@ package android.view {
     field public static final int PROGRESS_START = 0; // 0x0
     field public static final int PROGRESS_VISIBILITY_OFF = -2; // 0xfffffffe
     field public static final int PROGRESS_VISIBILITY_ON = -1; // 0xffffffff
+    field public boolean mIsFloatingWindow;
   }
 
   public static abstract interface Window.Callback {
