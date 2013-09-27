@@ -211,4 +211,66 @@
     <string name="halo_tutorial1">Soy HALO</string>
     <string name="halo_tutorial2">Doble pulsación y arrastre para moverme alrededor, arrastre para alternar entre las tareas</string>
     <string name="halo_tutorial3">Cambia mi comportamiento en Ajustes</string>
+    <string name="halo_battery_plugged">CARGANDO</string>
+    <string name="halo_battery_unplugged">RESTANTE</string>
+    <string name="halo_battery_full">LLENO</string>
+    <string name="halo_aeroplane1">AVIÓN</string>
+    <string name="halo_aeroplane2">MODO</string>
+    <string name="halo_wifi_on">WI-FI ON</string>
+    <string name="halo_wifi_off">WI-FI OFF</string>
+    <string name="halo_signal_bars_4">LLENO</string>
+    <string name="halo_signal_bars_3">TRES BARRAS</string>
+    <string name="halo_signal_bars_2">DOS BARRAS</string>
+    <string name="halo_signal_bars_1">UNA BARRA</string>
+    <string name="halo_signal_bars_none">NO HAY BARRAS</string>
+
+    <!-- Text to display next to the minimal graphical battery meter.  [CHAR LIMIT=3] -->
+    <string name="status_bar_settings_battery_meter_min_format" translatable="false">
+        <xliff:g id="number">%d</xliff:g>
+    </string>
+
+    <!-- Quick Settings -->
+    <string name="quick_settings_gps">GPS</string>
+    <string name="quick_settings_gps_off">GPS apagado</string>
+    <string name="quick_settings_power">Power</string>
+    <string name="quick_settings_vibration_on">Vibración encendida</string>
+    <string name="quick_settings_vibration_off">Vibración apagada</string>
+    <string name="quick_settings_label_enabled">Encendido</string>
+    <string name="quick_settings_label_disabled">Apagado</string>
+    <string name="quick_settings_lockscreen">Bloquear pantalla</string>
+    <string name="quick_settings_report_bug">Reportar error</string>
+    <string name="quick_settings_sync">Sincronizar</string>
+    <string name="quick_settings_sync_off">Sync desactivada</string>
+    <string name="quick_settings_torch">Linterna</string>
+    <string name="quick_settings_torch_off">Torch apagada</string>
+    <string name="quick_settings_nfc">NFC</string>
+    <string name="quick_settings_nfc_off">NFC apagado</string>
+    <string name="quick_settings_screen_timeout">Tiempo de espera</string>
+    <string name="quick_settings_screen_timeout_summary" translatable="false">%1$d %2$s</string>
+    <string name="quick_settings_usb_tether_off_label">Desconectado</string>
+    <string name="quick_settings_usb_tether_connected_label">Tethering desactivado</string>
+    <string name="quick_settings_usb_tether_on_label">Tethering</string>
+    <string name="quick_settings_wifiap">Wi-Fi AP</string>
+    <string name="quick_settings_wifiap_off">Wi-Fi AP desactivado</string>
+    <string name="quick_settings_volume">Volumen</string>
+    <string name="quick_settings_camera_label">Camara</string>
+    <string name="quick_settings_fcharge">Carga rápida</string>
+
+    <!-- Expanded desktop strings break the rules a bit - the icon identifies the feature, the string indicates current state -->
+    <string name="quick_settings_expanded_desktop">Expandido</string>
+    <string name="quick_settings_expanded_desktop_off">Normal</string>
+    
+    <!-- Camera tile toasts -->
+    <string name="quick_settings_camera_error_connect">No se puede abrir la camara</string>
+
+    <!-- Dialog title for navigation bar button selection -->
+    <string name="navbar_dialog_title">Elija la acción para asignar</string>
+    <string name="navbar_home_button">Botón Inicio</string>
+    <string name="navbar_recent_button">Botón Recientes</string>
+    <string name="navbar_search_button">Botón Búsqueda</string>
+    <string name="navbar_back_button">Botón Atrás</string>
+    <string name="navbar_empty_button">Botón Vacío</string>
+    <string name="navbar_menu_conditional_button">Botón Inicio (auto oculto)</string>
+    <string name="navbar_menu_always_button">Botón Inicio (siempre se muestra)</string>
+    <string name="navbar_menu_big_button">Botón Inicio</string>
 </resources>
