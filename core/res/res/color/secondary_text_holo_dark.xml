@@ -15,13 +15,13 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_window_focused="false" android:state_enabled="false" android:color="@android:color/dim_foreground_disabled_holo_dark"/>
-    <item android:state_window_focused="false" android:color="@android:color/dim_foreground_holo_dark"/>
-    <item android:state_selected="true" android:state_enabled="false" android:color="@android:color/dim_foreground_disabled_holo_dark"/>
-    <item android:state_pressed="true" android:state_enabled="false" android:color="@android:color/dim_foreground_disabled_holo_dark"/>
-    <item android:state_selected="true" android:color="@android:color/dim_foreground_holo_dark"/>
-    <item android:state_activated="true" android:color="@android:color/bright_foreground_holo_dark"/>
-    <item android:state_pressed="true" android:color="@android:color/dim_foreground_holo_dark"/>
-    <item android:state_enabled="false" android:color="@android:color/dim_foreground_disabled_holo_dark"/>
-    <item android:color="@android:color/dim_foreground_holo_dark"/> <!-- not selected -->
+    <item android:state_window_focused="false" android:state_enabled="false" android:color="#ff33b5e5" />
+    <item android:state_window_focused="false" android:color="#ff33b5e5" />
+    <item android:state_enabled="false" android:state_selected="true" android:color="#ff33b5e5" />
+    <item android:state_enabled="false" android:state_pressed="true" android:color="#ff33b5e5" />
+    <item android:state_selected="true" android:color="@color/bright_foreground_disabled_holo_light" />
+    <item android:color="@color/facelock_spotlight_mask" android:state_activated="true" />
+    <item android:state_pressed="true" android:color="@color/bright_foreground_disabled_holo_light" />
+    <item android:state_enabled="false" android:color="#ff33b5e5" />
+    <item android:color="#ff33b5e5" />
 </selector>
