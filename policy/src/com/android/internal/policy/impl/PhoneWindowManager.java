@@ -24,7 +24,6 @@ import android.app.IActivityManager;
 import android.app.KeyguardManager;
 import android.app.AppOpsManager;
 import android.app.IUiModeManager;
-import android.app.AppGlobals;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.UiModeManager;
@@ -949,7 +948,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         } catch (RemoteException ex) { }
         mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
-
         mShortcutManager = new ShortcutManager(context, mHandler);
         mShortcutManager.observe();
         mUiMode = context.getResources().getInteger(
@@ -1190,16 +1188,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mOverscanBottom = bottom;
         }
     }
-
-    private void closeApplication(String packageName) {
-        try {
-            ActivityManagerNative.getDefault().killApplicationProcess(
-                    packageName, AppGlobals.getPackageManager().getPackageUid(
-                    packageName, UserHandle.myUserId()));
-        } catch (RemoteException e) {
-           // Good luck next time!
-        }
-   }
 
     public void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
