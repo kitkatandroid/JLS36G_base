@@ -139,7 +139,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected int mCurrentUserId = 0;
 
-    protected FrameLayout mStatusBarContainer;
     protected int mLayoutDirection;
     private Locale mLocale;
 
@@ -271,8 +270,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         mBarService = IStatusBarService.Stub.asInterface(
                 ServiceManager.getService(Context.STATUS_BAR_SERVICE));
-
-        mStatusBarContainer = new FrameLayout(mContext);
 
         mLocale = mContext.getResources().getConfiguration().locale;
         mLayoutDirection = TextUtils.getLayoutDirectionFromLocale(mLocale);

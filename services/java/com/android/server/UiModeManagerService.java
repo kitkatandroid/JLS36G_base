@@ -50,7 +50,6 @@ import java.io.PrintWriter;
 import com.android.internal.R;
 import com.android.internal.app.DisableCarModeActivity;
 import com.android.server.TwilightService.TwilightState;
-import com.android.internal.app.ThemeUtils;
 
 final class UiModeManagerService extends IUiModeManager.Stub {
     private static final String TAG = UiModeManager.class.getSimpleName();
@@ -63,7 +62,6 @@ final class UiModeManagerService extends IUiModeManager.Stub {
     private final Context mContext;
     private final TwilightService mTwilightService;
     private final Handler mHandler = new Handler();
-    private Context mUiContext;
 
     final Object mLock = new Object();
 
@@ -148,13 +146,6 @@ final class UiModeManagerService extends IUiModeManager.Stub {
         }
     };
 
-    private final BroadcastReceiver mThemeChangeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mUiContext = null;
-        }
-    };
-
     private final TwilightService.TwilightListener mTwilightListener =
             new TwilightService.TwilightListener() {
         @Override
@@ -191,8 +182,6 @@ final class UiModeManagerService extends IUiModeManager.Stub {
                 new IntentFilter(Intent.ACTION_DOCK_EVENT));
         mContext.registerReceiver(mBatteryReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        ThemeUtils.registerThemeChangeReceiver(mContext, mThemeChangeReceiver);
 
         // Register settings observer and set initial preferences
         SettingsObserver settingsObserver = new SettingsObserver(new Handler());
@@ -603,7 +592,7 @@ final class UiModeManagerService extends IUiModeManager.Stub {
                 n.flags = Notification.FLAG_ONGOING_EVENT;
                 n.when = 0;
                 n.setLatestEventInfo(
-                        getUiContext(),
+                        mContext,
                         mContext.getString(R.string.car_mode_disable_notification_title),
                         mContext.getString(R.string.car_mode_disable_notification_message),
                         PendingIntent.getActivityAsUser(mContext, 0, carModeOffIntent, 0,
@@ -633,13 +622,6 @@ final class UiModeManagerService extends IUiModeManager.Stub {
         }
     }
 
-    private Context getUiContext() {
-        if (mUiContext == null) {
-            mUiContext = ThemeUtils.createUiContext(mContext);
-        }
-        return mUiContext != null ? mUiContext : mContext;
-    }
-
     @Override
     protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
         if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.DUMP)
@@ -660,7 +642,7 @@ final class UiModeManagerService extends IUiModeManager.Stub {
                     pw.print(" mComputedNightMode="); pw.println(mComputedNightMode);
             pw.print("  mCurUiMode=0x"); pw.print(Integer.toHexString(mCurUiMode));
                     pw.print(" mSetUiMode=0x"); pw.println(Integer.toHexString(mSetUiMode));
-                    pw.print(" mSetUiInvertedMode=0x"); pw.println(Integer.toHexString(mSetUiInvertedMode));
+            pw.print(" mSetUiInvertedMode=0x"); pw.println(Integer.toHexString(mSetUiInvertedMode));
             pw.print("  mHoldingConfiguration="); pw.print(mHoldingConfiguration);
                     pw.print(" mSystemReady="); pw.println(mSystemReady);
             pw.print("  mTwilightService.getCurrentState()=");

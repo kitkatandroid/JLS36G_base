@@ -177,7 +177,6 @@ extern int register_android_content_res_Configuration(JNIEnv* env);
 extern int register_android_animation_PropertyValuesHolder(JNIEnv *env);
 extern int register_com_android_internal_content_NativeLibraryHelper(JNIEnv *env);
 extern int register_com_android_internal_net_NetworkStatsFactory(JNIEnv *env);
-extern int register_android_content_res_PackageRedirectionMap(JNIEnv* env); 
 
 static AndroidRuntime* gCurRuntime = NULL;
 
@@ -1215,7 +1214,6 @@ static const RegJNIRec gRegJNI[] = {
     REG_JNI(register_android_animation_PropertyValuesHolder),
     REG_JNI(register_com_android_internal_content_NativeLibraryHelper),
     REG_JNI(register_com_android_internal_net_NetworkStatsFactory),
-    REG_JNI(register_android_content_res_PackageRedirectionMap), 
 };
 
 /*
@@ -1274,4 +1272,3 @@ jint Java_LoadClass_registerNatives(JNIEnv* env, jclass clazz) {
 }
 
 }   // namespace android
-
