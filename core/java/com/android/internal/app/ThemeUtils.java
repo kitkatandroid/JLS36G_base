@@ -53,7 +53,3 @@ public class ThemeUtils {
         context.registerReceiver(receiver, filter);
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 10fb853... Theme chooser (frameworks)

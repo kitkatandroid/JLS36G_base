@@ -37,12 +37,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-<<<<<<< HEAD
 import android.content.SharedPreferences;
-=======
-import android.content.res.Configuration;
-import android.content.res.CustomTheme;
->>>>>>> 10fb853... Theme chooser (frameworks)
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
@@ -68,7 +63,6 @@ import android.service.dreams.IDreamManager;
 import android.util.DisplayMetrics;
 import android.util.EventLog;
 import android.util.Log;
-import android.util.Pair;
 import android.util.Slog;
 import android.view.Display;
 import android.view.Gravity;
@@ -88,7 +82,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -113,17 +106,9 @@ import com.android.systemui.statusbar.policy.IntruderAlertView;
 import com.android.systemui.statusbar.policy.LocationController;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
-<<<<<<< HEAD
 import com.android.systemui.statusbar.policy.OnSizeChangedListener;
 import com.android.systemui.statusbar.policy.Prefs;
 import com.android.systemui.statusbar.AppSidebar;
-=======
-
-import java.io.FileDescriptor;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
->>>>>>> 10fb853... Theme chooser (frameworks)
 
 public class PhoneStatusBar extends BaseStatusBar {
     static final String TAG = "PhoneStatusBar";
@@ -284,7 +269,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     int[] mAbsPos = new int[2];
     Runnable mPostCollapseCleanup = null;
 
-<<<<<<< HEAD
     private Animator mLightsOutAnimation;
     private Animator mLightsOnAnimation;
 
@@ -294,15 +278,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     int mLinger;
     int mInitialTouchX;
     int mInitialTouchY;
-=======
-    // last theme that was applied in order to detect theme change (as opposed
-    // to some other configuration change).
-    CustomTheme mCurrentTheme;
-    private boolean mRecreating = false;
-
-    private AnimatorSet mLightsOutAnimation;
-    private AnimatorSet mLightsOnAnimation;
->>>>>>> 10fb853... Theme chooser (frameworks)
 
     // for disabling the status bar
     int mDisabled = 0;
@@ -410,11 +385,6 @@ public class PhoneStatusBar extends BaseStatusBar {
                 ServiceManager.checkService(DreamService.DREAM_SERVICE));
 
         mCurrUiInvertedMode = mContext.getResources().getConfiguration().uiInvertedMode;
-
-        CustomTheme currentTheme = mContext.getResources().getConfiguration().customTheme;
-        if (currentTheme != null) {
-            mCurrentTheme = (CustomTheme)currentTheme.clone();
-        }
 
         super.start(); // calls createAndAddWindows()
 
@@ -814,10 +784,6 @@ public class PhoneStatusBar extends BaseStatusBar {
                 enable ? 1 : 0);
     }
 
-    void onBarViewDetached() {
-     //   WindowManagerImpl.getDefault().removeView(mStatusBarWindow);
-    }
-
     @Override
     protected void updateSearchPanel() {
         super.updateSearchPanel();
@@ -928,12 +894,6 @@ public class PhoneStatusBar extends BaseStatusBar {
     private void repositionNavigationBar() {
         if (mNavigationBarView == null) return;
 
-        CustomTheme newTheme = mContext.getResources().getConfiguration().customTheme;
-        if (newTheme != null &&
-                (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
-            // Nevermind, this will be re-created
-            return;
-        }
         prepareNavigationBarView();
 
         mWindowManager.updateViewLayout(mNavigationBarView, getNavigationBarLayoutParams());
@@ -1090,7 +1050,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                 notification.getNotification().fullScreenIntent.send();
             } catch (PendingIntent.CanceledException e) {
             }
-        } else if (!mRecreating) {
+        } else {
             // usual case: status bar visible & not immersive
 
             // show the ticker if there isn't an intruder too
@@ -1124,7 +1084,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         setAreThereNotifications();
     }
 
-<<<<<<< HEAD
     private void updateStatusBarVisibility() {
         if (Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.AUTO_HIDE_STATUSBAR, 0) == 1) {
@@ -1135,16 +1094,6 @@ public class PhoneStatusBar extends BaseStatusBar {
             Settings.System.putInt(mContext.getContentResolver(),
                     Settings.System.HIDE_STATUSBAR, 0);
         }
-=======
-    @Override
-    protected void onConfigurationChanged(Configuration newConfig) {
-        try {
-            updateRecentsPanel();
-        } catch(android.view.InflateException avIE) {
-            Log.d(TAG, "Reinflation failure for the recents panel, new theme is '" + newConfig.customTheme + "' vs current '" + mContext.getResources().getConfiguration().customTheme + "'");
-        }
-        updateShowSearchHoldoff();
->>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     private void updateShowSearchHoldoff() {
@@ -1548,16 +1497,11 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         // Expand the window to encompass the full screen in anticipation of the drag.
         // This is only possible to do atomically because the status bar is at the top of the screen!
-        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mStatusBarContainer.getLayoutParams();
+        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mStatusBarWindow.getLayoutParams();
         lp.flags &= ~WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.flags |= WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
-<<<<<<< HEAD
         mWindowManager.updateViewLayout(mStatusBarWindow, lp);
-=======
-        final WindowManager wm = WindowManagerImpl.getDefault();
-        wm.updateViewLayout(mStatusBarContainer, lp);
->>>>>>> 10fb853... Theme chooser (frameworks)
 
         // Updating the window layout will force an expensive traversal/redraw.
         // Kick off the reveal animation after this is complete to avoid animation latency.
@@ -1909,16 +1853,11 @@ public class PhoneStatusBar extends BaseStatusBar {
         visibilityChanged(false);
 
         // Shrink the window to the size of the status bar only
-        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mStatusBarContainer.getLayoutParams();
+        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mStatusBarWindow.getLayoutParams();
         lp.height = getStatusBarHeight();
         lp.flags |= WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         lp.flags &= ~WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
-<<<<<<< HEAD
         mWindowManager.updateViewLayout(mStatusBarWindow, lp);
-=======
-        final WindowManager wm = WindowManagerImpl.getDefault();
-        wm.updateViewLayout(mStatusBarContainer, lp);
->>>>>>> 10fb853... Theme chooser (frameworks)
 
         if ((mDisabled & StatusBarManager.DISABLE_NOTIFICATION_ICONS) == 0) {
             setNotificationIconVisibility(true, com.android.internal.R.anim.fade_in);
@@ -2318,11 +2257,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         // until status bar window is attached to the window manager,
         // because...  well, what's the point otherwise?  And trying to
         // run a ticker without being attached will crash!
-<<<<<<< HEAD
         if (n.getNotification().tickerText != null && mStatusBarWindow.getWindowToken() != null) {
-=======
-        if (n.notification.tickerText != null && mStatusBarContainer.getWindowToken() != null) {
->>>>>>> 10fb853... Theme chooser (frameworks)
             if (0 == (mDisabled & (StatusBarManager.DISABLE_NOTIFICATION_ICONS
                             | StatusBarManager.DISABLE_NOTIFICATION_TICKER))) {
                 mTicker.addEntry(n);
@@ -2507,14 +2442,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         lp.packageName = mContext.getPackageName();
 
         makeStatusBarView();
-<<<<<<< HEAD
         mNavigationBarView.updateResources();
         mWindowManager.addView(mStatusBarWindow, lp);
-=======
-
-        mStatusBarContainer.addView(mStatusBarWindow);
-        WindowManagerImpl.getDefault().addView(mStatusBarContainer, lp);
->>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     void setNotificationIconVisibility(boolean visible, int anim) {
@@ -2795,7 +2724,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         final Context context = mContext;
         final Resources res = context.getResources();
 
-<<<<<<< HEAD
         // detect inverted ui mode change
         int uiInvertedMode =
             mContext.getResources().getConfiguration().uiInvertedMode;
@@ -2808,25 +2736,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mQS != null) mQS.updateResources();
 
         loadDimens();
-=======
-        // detect theme change.
-        CustomTheme newTheme = res.getConfiguration().customTheme;
-        if (newTheme != null &&
-                (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
-            mCurrentTheme = (CustomTheme)newTheme.clone();
-            try {
-                Runtime.getRuntime().exec("pkill -TERM -f com.android.systemui");
-            } catch (IOException e) {
-                // we're screwed here fellas
-            }
-        } else {
-
-            if (mClearButton instanceof TextView) {
-                ((TextView)mClearButton).setText(context.getText(R.string.status_bar_clear_all_button));
-            }
-            loadDimens();
-        }
->>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     protected void loadDimens() {

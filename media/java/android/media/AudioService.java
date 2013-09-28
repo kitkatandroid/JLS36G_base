@@ -75,11 +75,7 @@ import android.view.Surface;
 import android.view.VolumePanel;
 import android.view.WindowManager;
 
-<<<<<<< HEAD
 import com.android.internal.app.ThemeUtils; 
-=======
-import com.android.internal.app.ThemeUtils;
->>>>>>> 10fb853... Theme chooser (frameworks)
 import com.android.internal.telephony.ITelephony;
 import com.android.internal.util.XmlUtils;
 
@@ -486,6 +482,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         sSoundEffectVolumeDb = context.getResources().getInteger(
                 com.android.internal.R.integer.config_soundEffectVolumeDb);
 
+        mVolumePanel = new VolumePanel(context, this);
         mMode = AudioSystem.MODE_NORMAL;
         mForcedUseForComm = AudioSystem.FORCE_NONE;
 
@@ -575,11 +572,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
             public void onReceive(Context context, Intent intent) {
                 mUiContext = null;
             }
-<<<<<<< HEAD
         }); 
-=======
-        });
->>>>>>> 10fb853... Theme chooser (frameworks)
 
         // Register for phone state monitoring
         TelephonyManager tmgr = (TelephonyManager)
@@ -1174,7 +1167,6 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         }
 
         showVolumeChangeUi(streamType, flags);
-<<<<<<< HEAD
 
         if ((flags & AudioManager.FLAG_FIXED_VOLUME) == 0) {
             oldIndex = (oldIndex + 5) / 10;
@@ -1185,15 +1177,6 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
             intent.putExtra(AudioManager.EXTRA_PREV_VOLUME_STREAM_VALUE, oldIndex);
             sendBroadcastToAll(intent);
         }
-=======
-        oldIndex = (oldIndex + 5) / 10;
-        index = (index + 5) / 10;
-        Intent intent = new Intent(AudioManager.VOLUME_CHANGED_ACTION);
-        intent.putExtra(AudioManager.EXTRA_VOLUME_STREAM_TYPE, streamType);
-        intent.putExtra(AudioManager.EXTRA_VOLUME_STREAM_VALUE, index);
-        intent.putExtra(AudioManager.EXTRA_PREV_VOLUME_STREAM_VALUE, oldIndex);
-        mContext.sendBroadcast(intent);
->>>>>>> 10fb853... Theme chooser (frameworks)
     }
 
     // UI update and Broadcast Intent
@@ -4388,15 +4371,9 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         }
     }
 
-<<<<<<< HEAD
     private void hasNewRemotePlaybackInfo() {
         if (mUiContext != null && mVolumePanel != null) {
             mVolumePanel.postHasNewRemotePlaybackInfo();
-=======
-    private void showVolumeChangeUi(final int streamType, final int flags) {
-        if (mUiContext != null && mVolumePanel != null) {
-            mVolumePanel.postVolumeChanged(streamType, flags);
->>>>>>> 10fb853... Theme chooser (frameworks)
         } else {
             mHandler.post(new Runnable() {
                 @Override
@@ -4407,19 +4384,11 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
 
                     final Context context = mUiContext != null ? mUiContext : mContext;
                     mVolumePanel = new VolumePanel(context, AudioService.this);
-<<<<<<< HEAD
                     mVolumePanel.postHasNewRemotePlaybackInfo();
                 }
             });
         }
     } 
-=======
-                    mVolumePanel.postVolumeChanged(streamType, flags);
-                }
-            });
-        }
-    }
->>>>>>> 10fb853... Theme chooser (frameworks)
 
     //==========================================================================================
     // AudioFocus

@@ -2609,13 +2609,8 @@ final class Settings {
             if (pkgSetting.getNotLaunched(userId)) {
                 if (pkgSetting.installerPackageName != null) {
                     PackageManagerService.sendPackageBroadcast(Intent.ACTION_PACKAGE_FIRST_LAUNCH,
-<<<<<<< HEAD
                             pkgSetting.name, null,
                             pkgSetting.installerPackageName, null, new int[] {userId});
-=======
-                            pkgSetting.name, null, null,
-                            pkgSetting.installerPackageName, null, userId);
->>>>>>> 10fb853... Theme chooser (frameworks)
                 }
                 pkgSetting.setNotLaunched(false, userId);
             }
