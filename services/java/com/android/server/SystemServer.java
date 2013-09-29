@@ -60,7 +60,6 @@ import com.android.server.input.InputManagerService;
 import com.android.server.net.NetworkPolicyManagerService;
 import com.android.server.net.NetworkStatsService;
 import com.android.server.os.SchedulingPolicyService;
-import com.android.server.pie.PieService;
 import com.android.server.pm.Installer;
 import com.android.server.pm.PackageManagerService;
 import com.android.server.pm.UserManagerService;
@@ -366,7 +365,6 @@ class ServerThread extends Thread {
         TextServicesManagerService tsms = null;
         LockSettingsService lockSettings = null;
         DreamManagerService dreamy = null;
-        PieService pieService = null;
 
         // Bring up services needed for UI.
         if (factoryTest != SystemServer.FACTORY_TEST_LOW_LEVEL) {
@@ -765,16 +763,6 @@ class ServerThread extends Thread {
                 new IdleMaintenanceService(context, battery);
             } catch (Throwable e) {
                 reportWtf("starting IdleMaintenanceService", e);
-
-            if (context.getResources().getBoolean(
-                    com.android.internal.R.bool.config_allowPieService)) {
-                try {
-                    Slog.i(TAG, "Pie Delivery Service");
-                    pieService = new PieService(context, wm, inputManager);
-                    ServiceManager.addService("pieservice", pieService);
-                } catch (Throwable e) {
-                    Slog.e(TAG, "Failure starting Pie Delivery Service Service", e);
-                }
             }
         }
 
@@ -859,13 +847,6 @@ class ServerThread extends Thread {
             reportWtf("making Display Manager Service ready", e);
         }
 
-        if (pieService != null) {
-            try {
-                pieService.systemReady();
-            } catch (Throwable e) {
-                reportWtf("making Pie Delivery Service ready", e);
-            }
-        }
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_APP_LAUNCH_FAILURE);
