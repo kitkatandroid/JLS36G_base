@@ -19058,6 +19058,7 @@ package android.provider {
   }
 
   protected static abstract interface ContactsContract.ContactOptionsColumns {
+    field public static final java.lang.String CUSTOM_NOTIFICATION = "custom_notification";
     field public static final java.lang.String CUSTOM_RINGTONE = "custom_ringtone";
     field public static final java.lang.String LAST_TIME_CONTACTED = "last_time_contacted";
     field public static final java.lang.String SEND_TO_VOICEMAIL = "send_to_voicemail";
@@ -20108,6 +20109,8 @@ package android.provider {
     field public static final java.lang.String HAPTIC_FEEDBACK_ENABLED = "haptic_feedback_enabled";
     field public static final deprecated java.lang.String HTTP_PROXY = "http_proxy";
     field public static final deprecated java.lang.String INSTALL_NON_MARKET_APPS = "install_non_market_apps";
+    field public static final java.lang.String LISTVIEW_ANIMATION = "listview_animation";
+    field public static final java.lang.String LISTVIEW_INTERPOLATOR = "listview_interpolator";
     field public static final deprecated java.lang.String LOCATION_PROVIDERS_ALLOWED = "location_providers_allowed";
     field public static final deprecated java.lang.String LOCK_PATTERN_ENABLED = "lock_pattern_autolock";
     field public static final deprecated java.lang.String LOCK_PATTERN_TACTILE_FEEDBACK_ENABLED = "lock_pattern_tactile_feedback_enabled";
@@ -28709,6 +28712,7 @@ package android.widget {
     method public void setFastScrollEnabled(boolean);
     method public void setFilterText(java.lang.String);
     method public void setFriction(float);
+    method public void setGridView(boolean);
     method public void setItemChecked(int, boolean);
     method public void setMultiChoiceModeListener(android.widget.AbsListView.MultiChoiceModeListener);
     method public void setOnScrollListener(android.widget.AbsListView.OnScrollListener);

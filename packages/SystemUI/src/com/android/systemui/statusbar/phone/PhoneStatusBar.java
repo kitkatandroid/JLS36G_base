@@ -277,9 +277,11 @@ public class PhoneStatusBar extends BaseStatusBar {
     // last theme that was applied in order to detect theme change (as opposed
     // to some other configuration change).
     CustomTheme mCurrentTheme;
-    private boolean mRecreating = false;
+    //private boolean mRecreating = false;
 
     private boolean mBrightnessControl = true;
+    private boolean mRecreating = false;
+
     private float mScreenWidth;
     private int mMinBrightness;
     int mLinger;
