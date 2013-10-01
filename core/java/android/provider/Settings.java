@@ -2275,8 +2275,6 @@ public final class Settings {
          */
         public static final String DTMF_TONE_TYPE_WHEN_DIALING = "dtmf_tone_type";
 
-	public static final String NAVIGATION_CONTROLS = "navigation_controls";
-
         /**
          * Whether the hearing aid is enabled. The value is
          * boolean (1 or 0).
