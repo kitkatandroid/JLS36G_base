@@ -25,6 +25,7 @@ import android.net.LocalServerSocket;
 import android.os.Debug;
 import android.os.Process;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.Trace;
 import android.util.EventLog;
 import android.util.Log;
