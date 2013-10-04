@@ -62,11 +62,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.internal.util.cm.DevUtils;
-<<<<<<< HEAD
-=======
-import com.android.internal.util.pie.PiePosition;
-import com.android.internal.util.pie.PieServiceConstants;
->>>>>>> fa46b51... Pie controls: Tweaking UX for pie service (1/2)
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.NavigationButtons;
@@ -285,21 +280,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                     Settings.System.NAV_BUTTONS), false, this);
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.KILL_APP_LONGPRESS_BACK), false, this);
-<<<<<<< HEAD
-=======
-            // trigger setupContainer()
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_CONTROLS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.EXPANDED_DESKTOP_STATE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.EXPANDED_DESKTOP_STYLE), false, this);
-            // trigger setupListener()
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_POSITIONS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SENSITIVITY), false, this);
->>>>>>> fa46b51... Pie controls: Tweaking UX for pie service (1/2)
         }
 
         @Override
@@ -408,25 +388,9 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         mContext.registerReceiver(mBroadcastReceiver, filter);
 
-<<<<<<< HEAD
         if (mTelephonyManager != null) {
             mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
         }
-=======
-        mPieTriggerSlots = Settings.System.getInt(resolver,
-                Settings.System.PIE_POSITIONS, PiePosition.BOTTOM.FLAG);
-
-        int sensitivity = Settings.System.getInt(resolver,
-                Settings.System.PIE_SENSITIVITY, 3);
-        if (sensitivity < PieServiceConstants.SENSITIVITY_LOWEST
-                || sensitivity > PieServiceConstants.SENSITIVITY_HIGHEST) {
-            sensitivity = PieServiceConstants.SENSITIVITY_DEFAULT;
-        }
-
-        mPieManager.updatePieActivationListener(mPieActivationListener,
-                sensitivity<<PieServiceConstants.SENSITIVITY_SHIFT
-                | mPieTriggerSlots & mPieTriggerMask);
->>>>>>> fa46b51... Pie controls: Tweaking UX for pie service (1/2)
     }
 
     private void setupNavigationItems() {
