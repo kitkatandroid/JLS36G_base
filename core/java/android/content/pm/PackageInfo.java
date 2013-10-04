@@ -223,13 +223,13 @@ public class PackageInfo implements Parcelable {
     /**
      * {@hide}
      */
-    //public boolean isThemeApk = false;
+    public boolean isThemeApk = false;
 
     // ThemeInfo
     /**
      * {@hide}
      */
-    //public ThemeInfo [] themeInfos;
+    public ThemeInfo [] themeInfos;
 
     /** @hide */
     public boolean requiredForAllUsers;
@@ -239,17 +239,6 @@ public class PackageInfo implements Parcelable {
 
     /** @hide */
     public String requiredAccountType;
-    // Is Theme Apk
-    /**
-     * {@hide}
-     */
-    public boolean isThemeApk = false;
-
-    // ThemeInfo
-    /**
-     * {@hide}
-     */
-    public ThemeInfo [] themeInfos;
 
     public PackageInfo() {
     }

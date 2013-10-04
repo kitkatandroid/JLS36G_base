@@ -3037,20 +3037,6 @@ public class PackageManagerService extends IPackageManager.Stub {
         }
     }
 
-    public List<PackageInfo> getInstalledThemePackages() {
-        // Returns a list of theme APKs.
-        ArrayList<PackageInfo> finalList = new ArrayList<PackageInfo>();
-        List<PackageInfo> installedPackagesList = mContext.getPackageManager().getInstalledPackages(0);
-        Iterator<PackageInfo> i = installedPackagesList.iterator();
-        while (i.hasNext()) {
-            final PackageInfo pi = i.next();
-            if (pi != null && pi.isThemeApk) {
-                finalList.add(pi);
-            }
-        }
-        return finalList;
-    }
-
     @Override
     public ParceledListSlice<PackageInfo> getInstalledPackages(int flags, int userId) {
         final boolean listUninstalled = (flags & PackageManager.GET_UNINSTALLED_PACKAGES) != 0;
@@ -9654,7 +9640,6 @@ public class PackageManagerService extends IPackageManager.Stub {
                     "replacePreferredActivity expects filter to have no data authorities, " +
                     "paths, schemes or types.");
         }
-
         synchronized (mPackages) {
             if (mContext.checkCallingOrSelfPermission(
                     android.Manifest.permission.SET_PREFERRED_APPLICATIONS)

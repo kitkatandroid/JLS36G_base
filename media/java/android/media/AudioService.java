@@ -75,7 +75,7 @@ import android.view.Surface;
 import android.view.VolumePanel;
 import android.view.WindowManager;
 
-import com.android.internal.app.ThemeUtils;
+import com.android.internal.app.ThemeUtils; 
 import com.android.internal.telephony.ITelephony;
 import com.android.internal.util.XmlUtils;
 
@@ -482,6 +482,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
         sSoundEffectVolumeDb = context.getResources().getInteger(
                 com.android.internal.R.integer.config_soundEffectVolumeDb);
 
+        mVolumePanel = new VolumePanel(context, this);
         mMode = AudioSystem.MODE_NORMAL;
         mForcedUseForComm = AudioSystem.FORCE_NONE;
 
@@ -571,7 +572,7 @@ public class AudioService extends IAudioService.Stub implements OnFinished {
             public void onReceive(Context context, Intent intent) {
                 mUiContext = null;
             }
-        });
+        }); 
 
         // Register for phone state monitoring
         TelephonyManager tmgr = (TelephonyManager)
