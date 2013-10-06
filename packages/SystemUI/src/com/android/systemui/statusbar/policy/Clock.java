@@ -227,25 +227,25 @@ public class Clock extends TextView {
     	String todayIs = null;
     	switch (today) {
     	case 1:
-			todayIs = "SUN ";
+			todayIs = "DOM ";
 			break;
 		case 2:
-			todayIs = "MON ";
+			todayIs = "LUN ";
 			break;
 		case 3:
-			todayIs = "TUE ";
+			todayIs = "MAR ";
 			break;
 		case 4:
-			todayIs = "WED ";
+			todayIs = "MIE ";
 			break;
 		case 5:
-			todayIs = "THU ";
+			todayIs = "JUE ";
 			break;
 		case 6:
-			todayIs = "FRI ";
+			todayIs = "VIE ";
 			break;
 		case 7:
-			todayIs = "SAT ";
+			todayIs = "SAB ";
 			break;
     	}
     		
