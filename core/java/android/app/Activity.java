@@ -5253,10 +5253,10 @@ public class Activity extends ContextThemeWrapper
         mWindowManager = mWindow.getWindowManager();
         mCurrentConfig = config;
 
-        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_SPLIT_VIEW) != 0) {
-            final IWindowManager wm = (IWindowManager) WindowManagerGlobal.getWindowManagerService();
-            updateSplitViewMetrics(true);
-        }
+        //if ((intent.getFlags() & Intent.FLAG_ACTIVITY_SPLIT_VIEW) != 0) {
+            //final IWindowManager wm = (IWindowManager) WindowManagerGlobal.getWindowManagerService();
+            //updateSplitViewMetrics(true);
+        //}
     }
 
     private void scaleFloatingWindow(Context context) {
